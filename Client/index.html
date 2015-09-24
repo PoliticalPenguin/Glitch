@@ -4,19 +4,18 @@
   <link rel="stylesheet" href="styles.css">
   <script src="bower_components/socket.io-client/socket.io.js"></script>
   <script src="bower_components/angular/angular.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
   <script src="socket.js"></script>   
-  <script src="Songs/songs.js"></script>  
+  <script src="YouTube/youtube.js"></script>
   <script src="app.js"></script>  
 </head>
 <body ng-app="glitch">
   <h1>Glitch</h1>
-  <div class="song-div">
-    <p class='song-info'>Artist - Title - Duration</p>
-    <audio controls autoplay src="test.mp3">
+  <div class="video-div" ng-controller="youtubeController">
+    <p class='video-info'>Emancipator - Anthem [ TODO: set this up with angular (youtube api?)</p>
+    <youtube-video video-url="currentVideo" player-vars = "playerVars" class='player'></youtube-video>
     </audio>
-    <img src="test.jpg"/>
   </div>
-
 </body>
 </html>

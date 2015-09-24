@@ -1,0 +1,15 @@
+body {
+  background-color: white;
+  color: #BBB;
+  font-family: arial, sans-serif;
+}
+
+h1 { 
+  font-size: 3em;
+}
+
+.video-div {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}

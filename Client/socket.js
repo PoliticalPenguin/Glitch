@@ -1,1 +1,1 @@
-//var socket = io.connect(window.protocol+window.hostname+":"+1337);
+var socket = io.connect(window.location.protocol+"//"+window.location.hostname+":"+1337);

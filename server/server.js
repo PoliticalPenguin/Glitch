@@ -1,72 +1,38 @@
 var express = require('express');
-var db = require('./db');
-var server = require('http');
+// var http = require('http');
 var parser = require('body-parser');
-var router = require('./routes.js');
+var moment = require('moment');
+var fs = require('fs');
 
-
-
-//Initialize connection to the database
-db.initialize( function () {
-  app.set("port", 3000);
-
-  app.use(parser.json());
-
-  app.use('/api', router);
-
-  app.use(express.static(__dirname + '/../client'));
-
-  if (!module.parent) {
-    app.listen(app.get("port"));
-
-  console.log("Listening on ", app.get("port"));
-  }
-});
-
-
-//Initializes io socket server
-var io = require('socket.io')(server);
-var ioPort = 1337;
-server.listen(ioPort, function(err) {
-  if (err) { console.log(err); }
-  console.log("Listening on port " + ioPort);
-});
-
-require('socketio-auth')(io, {
-  authenticate: function (socket, data, callback) {
-    var username = data.username;
-    var password = data.password;
-
-    //Write the mysql code
-  }
-});
-
-//Initializes express server
+//Initializes Express server to serve static files
 var app = express();
 module.exports.app = app;
 
-//io socket-related code
-// Socket API
-// Client-side
-// postmessage(obj)
-// login(obj)
-// createUser(obj)
-// logout()
+app.set("port", 3000);
 
-// Server-side
+app.use(parser.json());
 
-// loggedIn
-// notLoggedIn
-// addMessage(obj)
-// changeSong(locationString)
+app.use(express.static(__dirname + '/../client'));
+
+app.listen(app.get("port"));
+console.log("Express server listening on ", app.get("port"));
+
+//Initializes io socket server
+
+// server = http.createServer();
+// var io = require('socket.io')(server);
+// var ioPort = 1337;
+
+// server.listen(ioPort, function(err) {
+//   if (err) { console.log(err); }
+//   console.log("IO server listening on port " + ioPort);
+// });
+var ioPort = 1337;
+var io = require('socket.io')(ioPort);
+console.log("Socket.io server listening on " + ioPort);
 
 //Listens for and initializes client connections
-
-//isAuthenticated reflects whether a socket in activeSocket with the same index number
-//has been authenticated by the Express server.
 var activeSockets = [];
-var isAuthenticated = [];
-
 var numActiveClients = 0;
 
 io.on('connection', function(socket) {
@@ -75,54 +41,46 @@ io.on('connection', function(socket) {
   console.log("Connection established");
   numActiveClients++;
 
-  //Write function to check for authentication token, if exists then
-  //emit a 'loggedIn' to the socket
-  
   // Create listeners on each client socket for song updates
   socket.on('disconnect', function(socket) {
     var sockIdx = activeSockets.indexOf(socket);
     activeSockets.splice(sockIdx, 1);
-    isAuthenticated.splice(sockIdx, 1);
-    // var idx = players.indexOf(socket.player);
-    // players.splice(idx, 1);
     numActiveClients--;
   });
+});
 
-  socket.on('postMessage', function(message) {
-    //Check boolean to see if the socket has been authenticated
-      if(authenticated) {
-        io.emit('addMessage', message);
-      }
-
-      //Add code to write to database
-  });
-
-  socket.on('login', function(credentials) {
-    //Add code to check database for username + password
-
-    if(loginSuccess) {
-      socket.emit('loggedIn', {});
+//Read playlist file, parses playlist into an array and run server with the playlist array
+fs.readFile('./playlist.json', function read(err, data) {
+    if (err) {
+        throw err;
     }
-    else {
-      socket.emit('notLoggedIn', {});
-    }
+    var playlist = JSON.parse(data);
+    console.log(playlist);
+    runServer(playlist);
+});
 
-  });
+var runServer = function(playlist) {
+  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
+  var donePlaying = true; 
 
-  socket.on('createUser', function(credentials) {
+  if(playlist.length > 0) {
+    setInterval(function() {
+      //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
+      if(donePlaying && currentPlaylist.length > 0) {
+        endTime = play(currentPlaylist[0]); //Updates the endTime variable with the end time calculated for a given playlist entry
+        donePlaying = false;
+      };
 
-  });
+      if(moment().isAfter(endTime)) {  //If the current time is after the endTime for the current entry being played
+        donePlaying = true;
+        currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
+      };
+    }, 1000);
+  }
+};
 
-  socket.on('logout', function() {
-    //Token
-
-  });
-
-  //Stub for activities we want to do on an interval, such as voting
-  // setInterval(serverTick, _settings.serverTick);
-  // function serverTick() {
-  //   var now = Date.now();
-  // };
-
-
-
+var play = function(playlistEntry) {
+  io.emit('play', {play: playlistEntry});
+  //endtime should be calculated using Youtube API and should be returned in the format of the 'moment' library
+  //return the endTime
+}; 

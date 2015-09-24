@@ -1,1 +1,5 @@
-angular.module('app', [])
+angular.module('glitch', [
+  'glitch.songs',
+  'glitch.chats'
+  ])
+

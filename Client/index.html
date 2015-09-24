@@ -15,7 +15,7 @@
   <div class="Container" ng-controller="youtubeController">
     <div class="song-hist">
       <ul>
-        <li ng-repeat="video in pastVideos track by $index">{{ video }}</li>
+        <li class="playlist-song" ng-repeat="video in pastVideos track by $index">{{ video }}</li>
       </ul>
     </div>
     <div class="video-div">

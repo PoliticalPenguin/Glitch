@@ -21,7 +21,7 @@ angular.module('glitch.youtube', [
   // Stores the currently playing video
   $scope.currentVideo = {  
     url: 'https://www.youtube.com/watch?v=3PEGDGxZdzA#t=300s',
-    title: "Emancipator - Anthem",
+    title: "Emancipator - Anthem (2006)",
     duration: 60000,
   };
   

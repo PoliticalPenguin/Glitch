@@ -8,6 +8,11 @@ h1 {
   font-size: 3em;
 }
 
+.playlist-song {
+  border: 1px solid green;
+}
+
+
 .video-div {
   margin: auto;
   width: 50%;

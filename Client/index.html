@@ -4,8 +4,8 @@
   <link rel="stylesheet" href="styles.css">
   <script src="bower_components/socket.io-client/socket.io.js"></script>
   <script src="bower_components/angular/angular.js"></script>
-  <script src="socket.js"></script>  
-  <script src="Chat/chats.js"></script>    
+  <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
+  <script src="socket.js"></script>   
   <script src="Songs/songs.js"></script>  
   <script src="app.js"></script>  
 </head>
@@ -16,16 +16,6 @@
     <audio controls autoplay src="test.mp3">
     </audio>
     <img src="test.jpg"/>
-  </div>
-
-  <div class="chat-div" ng-controller="ChatsController">
-    <ul>
-      <li ng-repeat="chat in chats"> {{ chat }} </li> 
-    </ul>
-    <form ng-submit="sendNewMessage()">
-      <input type='text' placeholder='Send a Message' ng-model='chat.message' />
-      <input type='submit' />
-    </form>
   </div>
 
 </body>

@@ -12,10 +12,17 @@
 </head>
 <body ng-app="glitch">
   <h1>Glitch</h1>
-  <div class="video-div" ng-controller="youtubeController">
-    <p class='video-info'>Emancipator - Anthem [ TODO: set this up with angular (youtube api?)</p>
-    <youtube-video video-url="currentVideo" player-vars = "playerVars" class='player'></youtube-video>
-    </audio>
+  <div class="Container" ng-controller="youtubeController">
+    <div class="song-hist">
+      <ul>
+        <li ng-repeat="video in pastVideos track by $index">{{ video }}</li>
+      </ul>
+    </div>
+    <div class="video-div">
+      <p class='video-info'> {{ currentVideo.title }}</p>
+      <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player'></youtube-video>
+      </audio>
+    </div>
   </div>
 </body>
 </html>

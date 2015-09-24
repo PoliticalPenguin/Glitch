@@ -58,7 +58,6 @@ var runServer = function(playlist) {
     
   io.on('connection', function(socket) {
     activeSockets.push(socket);
-    isAuthenticated.push(false);
     console.log("Connection established");
     numActiveClients++;
 

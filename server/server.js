@@ -4,7 +4,7 @@ var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
 
-var youtubeKey; //Insert API key from Slack private room
+var youtubeKey = 'AIzaSyDt--PPbkglY1iFAKdOaeV54HcPYSP-QxU';
 
 //Initializes Express server to serve static files
 var app = express();

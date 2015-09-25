@@ -4,7 +4,7 @@ var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
 
-var youtubeKey = 'AIzaSyDt--PPbkglY1iFAKdOaeV54HcPYSP-QxU';
+var youtubeKey = require('./config.js').youtubeKey; //Insert API key from Slack private room
 
 //Initializes Express server to serve static files
 var app = express();
@@ -14,7 +14,7 @@ app.set("port", 3000);
 
 app.use(parser.json());
 
-app.use(express.static(__dirname + '/../client'));
+app.use(express.static(__dirname + '/../Client'));
 
 app.listen(app.get("port"));
 console.log("Express server listening on ", app.get("port"));

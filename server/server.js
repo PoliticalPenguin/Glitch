@@ -1,8 +1,10 @@
 var express = require('express');
-// var http = require('http');
+var https = require('https');
 var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
+
+var youtubeKey; //Insert API key from Slack private room
 
 //Initializes Express server to serve static files
 var app = express();
@@ -18,16 +20,6 @@ app.listen(app.get("port"));
 console.log("Express server listening on ", app.get("port"));
 
 //Initializes io socket server
-
-// server = http.createServer();
-// var io = require('socket.io')(server);
-// var ioPort = 1337;
-
-// server.listen(ioPort, function(err) {
-//   if (err) { console.log(err); }
-//   console.log("IO server listening on port " + ioPort);
-// });
-
 var ioPort = 1337;
 var io = require('socket.io')(ioPort);
 console.log("Socket.io server listening on " + ioPort);
@@ -41,19 +33,14 @@ fs.readFile('./playlist.json', function read(err, data) {
         throw err;
     }
     var playlist = JSON.parse(data);
-    console.log(playlist);
     runServer(playlist);
 });
-
+var currentSong = {startMoment: null, endMoment: null, title: null};  
 
 var runServer = function(playlist) {
   var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
   
-  //Variables to track the current song being played, its start time, its end time and whether the song is done playing
-  var currentSong = null;
- 
-  var startMoment = null;   
-  var endMoment = null;
+  //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
   var donePlaying = true; 
     
   io.on('connection', function(socket) {
@@ -62,7 +49,7 @@ var runServer = function(playlist) {
     numActiveClients++;
 
     //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
-    socket.emit('play', {url: currentSong, time: moment().diff(startMoment)})
+    socket.emit('play', {url: currentPlaylist[0], title: currentSong.title, time: moment().diff(currentSong.startMoment)});
 
     // Create listeners on each client socket for song updates
     socket.on('disconnect', function(socket) {
@@ -74,21 +61,16 @@ var runServer = function(playlist) {
 
   if(playlist.length > 0) {
     setInterval(function() {
-
-      if(moment().isAfter(endMoment)) {  //If the current time is after the endTime for the current entry being played
+      if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
         donePlaying = true;
         currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
       };
 
       //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
       if(donePlaying && currentPlaylist.length > 0) {
-        // endMoment = play(currentPlaylist[0]); //Updates the endTime variable with the end time calculated for a given playlist entry
-        
+        play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
-
-        currentSong = currentPlaylist[0];
-        startMoment = moment();   //Stores the time at which playback was started, in order to calculate the playback start times 
-      };                        //for clients that join after a new song has already started
+      };                                      
 
      
     }, 1000);
@@ -96,13 +78,35 @@ var runServer = function(playlist) {
 };
 
 var play = function(playlistEntry, timeToSkip) {
-  io.emit('play', {url: playlistEntry, time: timeToSkip || 0});
+  var parsedEntry = playlistEntry.split('=');
   
-  //endtime should be calculated using Youtube API and should be returned in the format of the 'moment' library
-  
-  var songDuration = {h: 0, m: 0, s: 0};  //This is a template of how the server expects to see song duration info from Youtube; format data from Youtube API to follow this format 
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 
 
-  var end = moment();
-  // endMoment().add(songDuration.h, 'hours').add(songDuration.m, 'minutes').add(songDuration.s, 'seconds'); //This is alternative syntax in case the chaining below does not work
-  return end.add(songDuration.h, 'hours').minutes(songDuration.m).seconds(songDuration.s);
+  https.get(requestString, function(res) {
+    var body = '';
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+    res.on('end', function() {
+      var object = JSON.parse(body);
+      var contentDetails = object.items[0].contentDetails;
+      var snippet = object.items[0].snippet;
+      
+      var videoDuration = moment.duration(contentDetails.duration);
+
+      var end = moment();
+      end.add(videoDuration);
+
+      var newSong = {};
+      newSong.title = snippet.title;
+      newSong.startMoment = moment();
+      newSong.endMoment = end;
+      console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
+      currentSong = newSong;
+      io.emit('play', {url: playlistEntry, title: currentSong.title, time: 0});
+  
+    });
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+  }); 
 }; 

@@ -1,4 +1,5 @@
 angular.module('glitch', [
-  'glitch.youtube'
-])
+  'glitch.youtube',
+  'glitch.chat',
+]);
 

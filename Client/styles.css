@@ -29,3 +29,49 @@ li {
   padding: 2px;
   list-style-type: none;
 }
+
+.chat {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 340px;
+  z-index: 3;
+  background: #f7f9fb;
+}
+
+
+
+form { 
+  position: fixed; 
+  bottom: 0;  
+  width: 20%;
+  margin-left: 30px;
+/*  text-align: center;*/
+}
+
+form input { 
+  width: 90%
+}
+
+form button { 
+  background: rgb(130, 224, 255); 
+  color: #170b35;
+  padding: 0 10px;
+  font-size: 12px; 
+}
+
+
+#messages { 
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0; 
+}
+
+#messages li { 
+  padding: 5px 10px; 
+}
+
+#messages li:nth-child(odd) { 
+  background: #eee; 
+}

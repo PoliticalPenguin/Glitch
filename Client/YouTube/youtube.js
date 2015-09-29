@@ -21,8 +21,9 @@ angular.module('glitch.youtube', [
 
   // Listen for a broadcast from the server
   socket.on('play', function(data) {
+    console.log(data);
     $scope.currentVideo.url = data.url + "#t=" + (data.time / 1000) +"s";
-    $scope.currentVideo.title = data.url;
-    $scope.pastVideos.push(data.url);
+    $scope.currentVideo.title = data.title;
+    $scope.pastVideos.push(data.title);
   });
 });

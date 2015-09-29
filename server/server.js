@@ -79,8 +79,6 @@ var runServer = function(playlist) {
         play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
       }                                      
-
-      };                                      
     }, 1000);
   }
 };

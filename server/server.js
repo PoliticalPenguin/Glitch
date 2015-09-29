@@ -4,7 +4,7 @@ var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
 
-var youtubeKey = require('./config.js').youtubeKey; //Insert API key from Slack private room
+var youtubeKey = require(__dirname + '/config.js').youtubeKey; //Insert API key from Slack private room
 
 //Initializes Express server to serve static files
 var app = express();
@@ -28,14 +28,15 @@ var activeSockets = [];
 var numActiveClients = 0;
 
 //Read playlist file, parses playlist into an array and run server with the playlist array
-fs.readFile('./playlist.json', function read(err, data) {
+fs.readFile(__dirname + '/playlist.json', function read(err, data) {
     if (err) {
         throw err;
     }
     var playlist = JSON.parse(data);
     runServer(playlist);
 });
-var currentSong = {startMoment: null, endMoment: null, title: null};  
+
+var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
 var runServer = function(playlist) {
   var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
@@ -48,10 +49,11 @@ var runServer = function(playlist) {
     console.log("Connection established");
     numActiveClients++;
 
-    //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
-    socket.emit('play', {url: currentPlaylist[0], title: currentSong.title, time: moment().diff(currentSong.startMoment)});
+    //This if statement stops the server from emitting a "play" message to the clients before the video data has been retrieved via Youtube API
+    if(currentSong.startMoment !== null)
+       //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
+      socket.emit('play', {url: currentPlaylist[0], title: currentSong.title, time: moment().diff(currentSong.startMoment)});
 
-    // Create listeners on each client socket for song updates
     socket.on('disconnect', function(socket) {
       var sockIdx = activeSockets.indexOf(socket);
       activeSockets.splice(sockIdx, 1);
@@ -77,13 +79,11 @@ var runServer = function(playlist) {
         play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
       }                                      
-
-     
     }, 1000);
   }
 };
 
-var play = function(playlistEntry, timeToSkip) {
+var play = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
   
   var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 
@@ -110,14 +110,23 @@ var play = function(playlistEntry, timeToSkip) {
       console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
       currentSong = newSong;
       io.emit('play', {url: playlistEntry, title: currentSong.title, time: 0});
-  
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);
   }); 
-}; 
+};
 
+//The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 
+module.exports.getCurrentSong = function () {
+  return currentSong;
+}
 
+module.exports.getConnectionInfo = function () {
+  return {clientSockets: activeSockets, numClients: numActiveClients};
+}
 
-
+module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
+  currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
+  console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
+}

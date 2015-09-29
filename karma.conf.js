@@ -16,14 +16,14 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       "Client/bower_components/socket.io-client/socket.io.js",
-      "Client/bower_components/angular/angular.js",
+      'Client/bower_components/angular/angular.js',
+      'Client/bower_components/angular-mocks/angular-mocks.js',
       "Client/bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js",
+      "Client/bower_components/angular-socket.io-mock/angular-socket.io-mock.js",
       "Client/app.js",
       "Client/socket.js",
       "Client/Chat/chat.js",
       "Client/YouTube/youtube.js",
-      'Client/bower_components/angular/angular.js',
-      'Client/bower_components/angular-mocks/angular-mocks.js',
       'test/client/*.js'
     ],
 

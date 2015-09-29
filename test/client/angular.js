@@ -10,9 +10,8 @@ describe('Client-side Angular', function() {
   var notify;
   var socketFactory;
 
-  beforeEach(inject(function(_$controller_, _socket_) {
+  beforeEach(inject(function(_$controller_) {
     $controller = _$controller_;
-    notify = _socket_;
   }));
 
   describe('YouTube Handling', function() {
@@ -40,11 +39,6 @@ describe('Client-side Angular', function() {
         expect($scope.pastVideos).to.have.length(0);
       });
       it('should add videos to the playlist', function(done) {
-        setTimeout(function() {
-          console.log($scope);
-          console.log($scope.pastVideos);
-          done();
-        }, 1000);
       });
     });
   });

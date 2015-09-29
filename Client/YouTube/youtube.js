@@ -2,7 +2,7 @@
 angular.module('glitch.youtube', [
   'youtube-embed'
   ])
-.controller('youtubeController', function($scope) {
+.controller('youtubeController', function($scope, socket) {
   // Stores the previously played videos
   $scope.pastVideos = [
   ];

@@ -59,11 +59,8 @@ var runServer = function(playlist) {
     });
 
     //chat socket
-    socket.on('chat message', function (msg) {
-      console.log('message: ' + msg);
-    });
-
     socket.on('chat message', function(msg){
+      console.log('message: ' + msg);
       io.emit('chat message', msg);
     });
   });

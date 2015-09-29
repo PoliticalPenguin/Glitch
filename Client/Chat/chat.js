@@ -1,6 +1,6 @@
 angular.module('glitch.chat', [])
-.controller('chatController', function($scope) {
-  // Stores the previously played videos
+.controller('chatController', function($scope, socket) {
+
   $scope.messages = [];
 
   $scope.sendMessage = function(keyEvent) {

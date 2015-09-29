@@ -57,6 +57,12 @@ var runServer = function(playlist) {
       activeSockets.splice(sockIdx, 1);
       numActiveClients--;
     });
+
+    //chat socket
+    socket.on('chat message', function(msg){
+      console.log('message: ' + msg);
+      io.emit('chat message', msg);
+    });
   });
 
   if(playlist.length > 0) {
@@ -64,13 +70,13 @@ var runServer = function(playlist) {
       if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
         donePlaying = true;
         currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
-      };
+      }
 
       //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
       if(donePlaying && currentPlaylist.length > 0) {
         play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
-      };                                      
+      }                                      
 
      
     }, 1000);
@@ -110,3 +116,8 @@ var play = function(playlistEntry, timeToSkip) {
     console.log("Got error: " + e.message);
   }); 
 }; 
+
+
+
+
+

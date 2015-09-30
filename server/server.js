@@ -30,6 +30,7 @@ var numActiveClients = 0;
 var chatMessages = [];
 var lastChatIdx = -1;
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
+var currentPlaylist;
 
 // Configuration variables
 var chatAnalysisTime = 5000;
@@ -60,13 +61,10 @@ var fetchPlaylistFromYouTube = function (queryString, callback) {
     res.on('end', function() {
       var object = JSON.parse(body);
       // Returns an array of video IDs and URLs as our playlist
-      var playlist = object.items.map(function(item) {
+      var results = object.items.map(function(item) {
         return 'https://www.youtube.com/watch?v=' + item.id.videoId;
       });
-      console.log('here is the playlist that got fetched: ', playlist);
-
-      callback(playlist);
-      
+      callback(results);
     });
   }).on('error', function(err) {
     console.log("There was an error fetching the music files from Youtube: ", err);
@@ -106,7 +104,7 @@ var setUpSockets = function () {
 };
 
 var handlePlaylist = function (playlist) {
-  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
+  currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
   
   var donePlaying = true;
   var intervalId; 
@@ -123,15 +121,6 @@ var handlePlaylist = function (playlist) {
       if(donePlaying && currentPlaylist.length > 0) {
         playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
-      }
-
-      if(currentPlaylist.length === 0) {
-        clearInterval(intervalId);
-
-        fetchPlaylistFromYouTube('george+michael', function (playlist) {
-          handlePlaylist(playlist);
-        });
-        //
       }                                      
     }, 1000);
   }
@@ -147,10 +136,14 @@ function analyzeChat() {
       }
       lastChatIdx = i;
     }
-    // So now we will send the bangs (queries) to the Youtube Search API function
-    // We are going to also send Anton's function a callback, which does:
-      // Adds the top result (result in slot 0) to the current playlist variable
-      // (Which will need to be global)
+
+    // For each bang, use the Youtube Search API
+    for (var i = 0; i < bangs.length; i++) {
+      fetchPlaylistFromYouTube(bangs[i], function(results) {
+        // Add the top result to our playlist
+        currentPlaylist.push(results[0]);
+      });
+    }
   }, chatAnalysisTime);
 }
 

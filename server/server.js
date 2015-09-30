@@ -27,23 +27,46 @@ console.log("Socket.io server listening on " + ioPort);
 var activeSockets = [];
 var numActiveClients = 0;
 
+//Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
+var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
+
 //Read playlist file, parses playlist into an array and run server with the playlist array
-fs.readFile(__dirname + '/playlist.json', function read(err, data) {
+var fetchPlaylistFromFile = function (callback) {
+  fs.readFile(__dirname + '/playlist.json', function read(err, data) {
     if (err) {
         throw err;
     }
     var playlist = JSON.parse(data);
-    runServer(playlist);
-});
+    callback(playlist);
+  });
+}
 
-var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
+var fetchPlaylistFromYouTube = function (queryString, callback) {
+  // Fetches only the IDs of the videos we are searching for
+  // default maxResults is 5
+  var requestString = 'https://www.googleapis.com/youtube/v3/search?part=id&fields=items/id/videoId&type=video&videoEmbeddable=true&videoDuration=short&maxResults=5&q='+ queryString + '&key=' + youtubeKey;
+  https.get(requestString, function(res) {
+    var body = '';
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+    res.on('end', function() {
+      var object = JSON.parse(body);
+      // Returns an array of video IDs and URLs as our playlist
+      var playlist = object.items.map(function(item) {
+        return 'https://www.youtube.com/watch?v=' + item.id.videoId;
+      });
+      console.log('here is the playlist that got fetched: ', playlist);
 
-var runServer = function(playlist) {
-  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
-  
-  //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
-  var donePlaying = true; 
-    
+      callback(playlist);
+      
+    });
+  }).on('error', function(err) {
+    console.log("There was an error fetching the music files from Youtube: ", err);
+  }); 
+};
+
+var setUpSockets = function () {
   io.on('connection', function(socket) {
     activeSockets.push(socket);
     console.log("Connection established");
@@ -52,7 +75,7 @@ var runServer = function(playlist) {
     //This if statement stops the server from emitting a "play" message to the clients before the video data has been retrieved via Youtube API
     if(currentSong.startMoment !== null)
        //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
-      socket.emit('play', {url: currentPlaylist[0], title: currentSong.title, time: moment().diff(currentSong.startMoment)});
+      socket.emit('play', {url: currentSong.url, title: currentSong.title, time: moment().diff(currentSong.startMoment)});
 
     socket.on('disconnect', function(socket) {
       var sockIdx = activeSockets.indexOf(socket);
@@ -66,9 +89,18 @@ var runServer = function(playlist) {
       io.emit('chat message', msg);
     });
   });
+  console.log('sockets established...');
+};
 
-  if(playlist.length > 0) {
-    setInterval(function() {
+var handlePlaylist = function (playlist) {
+  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
+  
+  var donePlaying = true;
+  var intervalId; 
+
+  if(playlist.length > 0) { // if a playlist with songs in it was passed in
+
+    intervalId = setInterval(function() {
       if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
         donePlaying = true;
         currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
@@ -76,14 +108,23 @@ var runServer = function(playlist) {
 
       //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
       if(donePlaying && currentPlaylist.length > 0) {
-        play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
+        playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
+      }
+
+      if(currentPlaylist.length === 0) {
+        clearInterval(intervalId);
+
+        fetchPlaylistFromYouTube('george+michael', function (playlist) {
+          handlePlaylist(playlist);
+        });
+        //
       }                                      
     }, 1000);
   }
 };
 
-var play = function(playlistEntry) {
+var playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
   
   var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 
@@ -104,17 +145,26 @@ var play = function(playlistEntry) {
       end.add(videoDuration);
 
       var newSong = {};
+      newSong.id = parsedEntry[1];
+      newSong.url = playlistEntry;
       newSong.title = snippet.title;
       newSong.startMoment = moment();
       newSong.endMoment = end;
       console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
       currentSong = newSong;
-      io.emit('play', {url: playlistEntry, title: currentSong.title, time: 0});
+      io.emit('play', {url: newSong.url, title: currentSong.title, time: 0});
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);
   }); 
 };
+
+
+// Start running the server
+fetchPlaylistFromFile(function (playlist) {
+  setUpSockets();  
+  handlePlaylist(playlist);
+});
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 

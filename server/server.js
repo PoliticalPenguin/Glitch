@@ -31,14 +31,15 @@ var numActiveClients = 0;
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
 //Read playlist file, parses playlist into an array and run server with the playlist array
-fs.readFile(__dirname + '/playlist.json', function read(err, data) {
+var fetchFromPlaylist = function(callback) {
+  fs.readFile(__dirname + '/playlist.json', function read(err, data) {
     if (err) {
         throw err;
     }
     var playlist = JSON.parse(data);
-    runServer(playlist);
-});
-
+    callback(playlist);
+  });
+}
 
 var fetchFromYouTube = function (queryString, callback) {
   // Fetches only the IDs of the videos we are searching for
@@ -152,6 +153,9 @@ var play = function(playlistEntry) {
     console.log("Got error: " + e.message);
   }); 
 };
+// The server code
+
+fetchFromPlaylist(runServer);
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 

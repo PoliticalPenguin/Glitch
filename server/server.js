@@ -31,7 +31,7 @@ var numActiveClients = 0;
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
 //Read playlist file, parses playlist into an array and run server with the playlist array
-var fetchFromPlaylist = function (callback) {
+var fetchPlaylistFromFile = function (callback) {
   fs.readFile(__dirname + '/playlist.json', function read(err, data) {
     if (err) {
         throw err;
@@ -41,7 +41,7 @@ var fetchFromPlaylist = function (callback) {
   });
 }
 
-var fetchFromYouTube = function (queryString, callback) {
+var fetchPlaylistFromYouTube = function (queryString, callback) {
   // Fetches only the IDs of the videos we are searching for
   // default maxResults is 5
   var requestString = 'https://www.googleapis.com/youtube/v3/search?part=id&fields=items/id/videoId&type=video&videoEmbeddable=true&videoDuration=short&maxResults=5&q='+ queryString + '&key=' + youtubeKey;
@@ -92,7 +92,7 @@ var setUpSockets = function () {
   console.log('sockets established...');
 };
 
-var runServer = function (playlist) {
+var handlePlaylist = function (playlist) {
   var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
   
   var donePlaying = true;
@@ -108,21 +108,23 @@ var runServer = function (playlist) {
 
       //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
       if(donePlaying && currentPlaylist.length > 0) {
-        play(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
+        playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
       }
 
       if(currentPlaylist.length === 0) {
         clearInterval(intervalId);
-        fetchFromYouTube('george+michael', function (playlist) {
-          runServer(playlist);
+
+        fetchPlaylistFromYouTube('george+michael', function (playlist) {
+          handlePlaylist(playlist);
         });
+        //
       }                                      
     }, 1000);
   }
 };
 
-var play = function(playlistEntry) {
+var playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
   
   var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 
@@ -159,9 +161,9 @@ var play = function(playlistEntry) {
 
 
 // Start running the server
-fetchFromPlaylist(function (playlist) {
+fetchPlaylistFromFile(function (playlist) {
   setUpSockets();  
-  runServer(playlist);
+  handlePlaylist(playlist);
 });
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment

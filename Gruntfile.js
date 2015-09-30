@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         "createConfigFile": {
           "server/config.js": function(fs, fd, done) {
             //The option is taking in the API key, which is decrypted and passed
-            //to grunt at build time by Travis
+            //to grunt at build time by Travis; note that encryption is repo-specific (i.e., each fork will use different encryption keys)
             fs.writeSync(fd, 'module.exports.youtubeKey = \'' + grunt.option('ytKey') + '\';');
             done();
           }

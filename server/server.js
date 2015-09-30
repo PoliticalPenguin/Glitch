@@ -88,6 +88,11 @@ var setUpSockets = function () {
       console.log('message: ' + msg);
       io.emit('chat message', msg);
     });
+
+    // Echo messages back to client (for use in debugging & testing)
+    socket.on('echo', function(obj) {
+      socket.emit(obj.name, obj.data);
+    });
   });
   console.log('sockets established...');
 };

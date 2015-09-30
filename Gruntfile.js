@@ -5,7 +5,9 @@ module.exports = function(grunt) {
     "file-creator": {
         "createConfigFile": {
           "server/config.js": function(fs, fd, done) {
-            fs.writeSync(fd, 'module.exports.youtubeKey = \'AIzaSyDt--PPbkglY1iFAKdOaeV54HcPYSP-QxU\';');
+            //The option is taking in the API key, which is decrypted and passed
+            //to grunt at build time by Travis
+            fs.writeSync(fd, 'module.exports.youtubeKey = \'' + grunt.option('ytKey') + '\';');
             done();
           }
         }

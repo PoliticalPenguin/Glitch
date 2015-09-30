@@ -175,13 +175,13 @@ fetchPlaylistFromFile(function (playlist) {
 
 module.exports.getCurrentSong = function () {
   return currentSong;
-}
+};
 
 module.exports.getConnectionInfo = function () {
   return {clientSockets: activeSockets, numClients: numActiveClients};
-}
+};
 
 module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
   currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
   console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
-}
+};

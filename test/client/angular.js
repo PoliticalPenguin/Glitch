@@ -6,12 +6,11 @@ describe('Client-side Angular', function() {
   beforeEach(module('glitch'));
 
   var $controller;
-  var socketController;
-  var notify;
-  var socketFactory;
+  var socket;
 
-  beforeEach(inject(function(_$controller_) {
+  beforeEach(inject(function(_$controller_, _socket_) {
     $controller = _$controller_;
+    socket = _socket_;
   }));
 
   describe('YouTube Handling', function() {
@@ -28,10 +27,12 @@ describe('Client-side Angular', function() {
         expect($scope.currentVideo.title).to.equal('Waiting For Server...');
       });
       it('should display videos', function(done) {
+        socket.emit('echo', {name: 'play', data: {url: 'https://www.youtube.com/watch?v=3PEGDGxZdzA', title: "Emancipator - Anthem (2006)"}});
+        this.timeout(3000);
         setTimeout(function() {
           expect($scope.currentVideo.title).to.not.equal('Waiting For Server...');
           done();
-        }, 1000);
+        }, 2000);
       });
     });
     describe('Song History', function() {
@@ -39,6 +40,13 @@ describe('Client-side Angular', function() {
         expect($scope.pastVideos).to.have.length(0);
       });
       it('should add videos to the playlist', function(done) {
+        socket.emit('echo', {name: 'play', data: {url: 'https://www.youtube.com/watch?v=3PEGDGxZdzA', title: "Emancipator - Anthem (2006)"}});
+        this.timeout(3000);
+        setTimeout(function() {
+          console.log($scope);
+          expect($scope.pastVideos.length).to.not.equal(0);
+          done();
+        }, 2000);
       });
     });
   });

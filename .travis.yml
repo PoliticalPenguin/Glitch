@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- 4.1.1
+- node
+before_install: npm install -g grunt-cli
+install: npm install
+before_script: grunt build --ytKey=$YT_API_KEY
+env:
+  matrix:
+  - secure: Bfp21HuOVIccSg8L/V+UbQuTTlCT2P5ysv+r6g4kO895epUjleMS657xe7o1ITBOaJMzaZNAzPAeYuUE7pboZhH2SFqU/mFloDA+LK/dwYLn8Ehh33LbIUs2r2D+1YVC4oYh+rk1Tk8TLm9uVZZF+LeDZPCppr417FeQSLW5JbU4sAEzzsDJH9dd8/ZElCTttvehaqeqvFwN6Bq49ZWjRM87PvgGP49JahbHfVUwNRyT0EN3UNQuHXa1T5Qb+WGyvFLUqJdRA7yymcxS33bhHTQmby++HRhZu5SqTE1DGkJwtyXpihlXmBPIg9hdjujLp84gHdR1z+AvaPY4x4TWIML8eoj7L/wYGxGrVo6UtLmDYZUv8Wkr+TcitCEDh093IZWchFL9kj1iwM9PtKoM8N5+gzUFqxK0uHz3gd3nczv8hhYErS46b5Yq6HF2aZvkkbcBxXaFinmRhGrCGYLFy7VZsCWNLir6ZLe8VVmyqCRxZIpygiGlaVkVuU8dgew8bdLCVv7GnulBKwRnXHD8vfnmkQxAGoLk92iCd/SxbTJ457QcQZaBRosJwlHtErUabNlPHhmTAQQ/4CKdKcx6Zy0J3mppzYsPQKtbs9yLLWDtRAJL+Y9YOg2ApFtvxninbNodvfPgZnLlgUstVFK9Pxd/wxWUGptXsFE+4hvBlHM=

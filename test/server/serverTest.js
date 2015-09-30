@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var app = require('./server/server.js');
+var app = require('../../server/server.js');
 var socketPort = 1337;
 var moment = require('moment');
 

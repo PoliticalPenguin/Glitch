@@ -27,11 +27,11 @@ console.log("Socket.io server listening on " + ioPort);
 var activeSockets = [];
 var numActiveClients = 0;
 
-
+//Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
 //Read playlist file, parses playlist into an array and run server with the playlist array
-var fetchFromPlaylist = function(callback) {
+var fetchFromPlaylist = function (callback) {
   fs.readFile(__dirname + '/playlist.json', function read(err, data) {
     if (err) {
         throw err;
@@ -64,16 +64,9 @@ var fetchFromYouTube = function (queryString, callback) {
   }).on('error', function(err) {
     console.log("There was an error fetching the music files from Youtube: ", err);
   }); 
- 
 };
 
-var runServer = function(playlist) {
-  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
-  
-  //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
-  var donePlaying = true;
-  var intervalId; 
-    
+var setUpSockets = function () {
   io.on('connection', function(socket) {
     activeSockets.push(socket);
     console.log("Connection established");
@@ -96,10 +89,18 @@ var runServer = function(playlist) {
       io.emit('chat message', msg);
     });
   });
+  console.log('sockets established...');
+};
+
+var runServer = function (playlist) {
+  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
+  
+  var donePlaying = true;
+  var intervalId; 
 
   if(playlist.length > 0) { // if a playlist with songs in it was passed in
+
     intervalId = setInterval(function() {
-      
       if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
         donePlaying = true;
         currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
@@ -113,7 +114,7 @@ var runServer = function(playlist) {
 
       if(currentPlaylist.length === 0) {
         clearInterval(intervalId);
-        fetchFromYouTube('my+life+in+4+seconds', function (playlist) {
+        fetchFromYouTube('george+michael', function (playlist) {
           runServer(playlist);
         });
       }                                      
@@ -155,9 +156,13 @@ var play = function(playlistEntry) {
     console.log("Got error: " + e.message);
   }); 
 };
-// The server code
 
-fetchFromPlaylist(runServer);
+
+// Start running the server
+fetchFromPlaylist(function (playlist) {
+  setUpSockets();  
+  runServer(playlist);
+});
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 

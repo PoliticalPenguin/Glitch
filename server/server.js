@@ -82,7 +82,7 @@ var runServer = function(playlist) {
     //This if statement stops the server from emitting a "play" message to the clients before the video data has been retrieved via Youtube API
     if(currentSong.startMoment !== null)
        //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
-      socket.emit('play', {url: currentPlaylist[0], title: currentSong.title, time: moment().diff(currentSong.startMoment)});
+      socket.emit('play', {url: currentSong.url, title: currentSong.title, time: moment().diff(currentSong.startMoment)});
 
     socket.on('disconnect', function(socket) {
       var sockIdx = activeSockets.indexOf(socket);
@@ -142,12 +142,14 @@ var play = function(playlistEntry) {
       end.add(videoDuration);
 
       var newSong = {};
+      newSong.id = parsedEntry[1];
+      newSong.url = playlistEntry;
       newSong.title = snippet.title;
       newSong.startMoment = moment();
       newSong.endMoment = end;
       console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
       currentSong = newSong;
-      io.emit('play', {url: playlistEntry, title: currentSong.title, time: 0});
+      io.emit('play', {url: newSong.url, title: currentSong.title, time: 0});
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);

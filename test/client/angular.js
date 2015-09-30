@@ -43,7 +43,6 @@ describe('Client-side Angular', function() {
         socket.emit('echo', {name: 'play', data: {url: 'https://www.youtube.com/watch?v=3PEGDGxZdzA', title: "Emancipator - Anthem (2006)"}});
         this.timeout(3000);
         setTimeout(function() {
-          console.log($scope);
           expect($scope.pastVideos.length).to.not.equal(0);
           done();
         }, 2000);

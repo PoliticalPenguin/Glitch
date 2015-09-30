@@ -65,6 +65,11 @@ var runServer = function(playlist) {
       console.log('message: ' + msg);
       io.emit('chat message', msg);
     });
+
+    // Echo messages back to client (for use in debugging & testing)
+    socket.on('echo', function(obj) {
+      socket.emit(obj.name, obj.data);
+    });
   });
 
   if(playlist.length > 0) {

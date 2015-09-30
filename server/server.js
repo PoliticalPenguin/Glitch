@@ -24,8 +24,15 @@ var ioPort = 1337;
 var io = require('socket.io')(ioPort);
 console.log("Socket.io server listening on " + ioPort);
 
+// Program storage variables
 var activeSockets = [];
 var numActiveClients = 0;
+var chatMessages = [];
+var lastChatIdx = -1;
+var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
+
+// Configuration variables
+var chatAnalysisTime = 5000;
 
 //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
@@ -39,7 +46,7 @@ var fetchPlaylistFromFile = function (callback) {
     var playlist = JSON.parse(data);
     callback(playlist);
   });
-}
+};
 
 var fetchPlaylistFromYouTube = function (queryString, callback) {
   // Fetches only the IDs of the videos we are searching for
@@ -86,6 +93,7 @@ var setUpSockets = function () {
     //chat socket
     socket.on('chat message', function(msg){
       console.log('message: ' + msg);
+      chatMessages.push(msg);
       io.emit('chat message', msg);
     });
 
@@ -129,6 +137,23 @@ var handlePlaylist = function (playlist) {
   }
 };
 
+function analyzeChat() {
+  setInterval(function() {
+    var bangs = [];
+    for (var i = lastChatIdx+1; i < chatMessages.length; i++) {
+      var chatMessage = chatMessages[i];
+      if (chatMessage.charAt(0) === "!") {
+        bangs.push(chatMessage.substr(1));
+      }
+      lastChatIdx = i;
+    }
+    // So now we will send the bangs (queries) to the Youtube Search API function
+    // We are going to also send Anton's function a callback, which does:
+      // Adds the top result (result in slot 0) to the current playlist variable
+      // (Which will need to be global)
+  }, chatAnalysisTime);
+}
+
 var playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
   
@@ -169,6 +194,7 @@ var playSong = function(playlistEntry) {
 fetchPlaylistFromFile(function (playlist) {
   setUpSockets();  
   handlePlaylist(playlist);
+  analyzeChat();
 });
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment

@@ -24,8 +24,15 @@ var ioPort = 1337;
 var io = require('socket.io')(ioPort);
 console.log("Socket.io server listening on " + ioPort);
 
+// Program storage variables
 var activeSockets = [];
 var numActiveClients = 0;
+var chatMessages = [];
+var lastChatIdx = -1;
+var currentPlaylist;
+
+// Configuration variables
+var chatAnalysisTime = 5000;
 
 //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
@@ -39,7 +46,7 @@ var fetchPlaylistFromFile = function (callback) {
     var playlist = JSON.parse(data);
     callback(playlist);
   });
-}
+};
 
 var fetchPlaylistFromYouTube = function (queryString, callback) {
   // Fetches only the IDs of the videos we are searching for
@@ -53,13 +60,10 @@ var fetchPlaylistFromYouTube = function (queryString, callback) {
     res.on('end', function() {
       var object = JSON.parse(body);
       // Returns an array of video IDs and URLs as our playlist
-      var playlist = object.items.map(function(item) {
+      var results = object.items.map(function(item) {
         return 'https://www.youtube.com/watch?v=' + item.id.videoId;
       });
-      console.log('here is the playlist that got fetched: ', playlist);
-
-      callback(playlist);
-      
+      callback(results);
     });
   }).on('error', function(err) {
     console.log("There was an error fetching the music files from Youtube: ", err);
@@ -86,6 +90,7 @@ var setUpSockets = function () {
     //chat socket
     socket.on('chat message', function(msg){
       console.log('message: ' + msg);
+      chatMessages.push(msg);
       io.emit('chat message', msg);
     });
 
@@ -98,7 +103,7 @@ var setUpSockets = function () {
 };
 
 var handlePlaylist = function (playlist) {
-  var currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
+  currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
   
   var donePlaying = true;
   var intervalId; 
@@ -115,19 +120,31 @@ var handlePlaylist = function (playlist) {
       if(donePlaying && currentPlaylist.length > 0) {
         playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
         donePlaying = false;
-      }
-
-      if(currentPlaylist.length === 0) {
-        clearInterval(intervalId);
-
-        fetchPlaylistFromYouTube('george+michael', function (playlist) {
-          handlePlaylist(playlist);
-        });
-        //
       }                                      
     }, 1000);
   }
 };
+
+function analyzeChat() {
+  setInterval(function() {
+    var bangs = [];
+    for (var i = lastChatIdx+1; i < chatMessages.length; i++) {
+      var chatMessage = chatMessages[i];
+      if (chatMessage.charAt(0) === "!") {
+        bangs.push(chatMessage.substr(1));
+      }
+      lastChatIdx = i;
+    }
+
+    // For each bang, use the Youtube Search API
+    for (var i = 0; i < bangs.length; i++) {
+      fetchPlaylistFromYouTube(bangs[i], function(results) {
+        // Add the top result to our playlist
+        currentPlaylist.push(results[0]);
+      });
+    }
+  }, chatAnalysisTime);
+}
 
 var playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
@@ -169,19 +186,20 @@ var playSong = function(playlistEntry) {
 fetchPlaylistFromFile(function (playlist) {
   setUpSockets();  
   handlePlaylist(playlist);
+  analyzeChat();
 });
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 
 module.exports.getCurrentSong = function () {
   return currentSong;
-}
+};
 
 module.exports.getConnectionInfo = function () {
   return {clientSockets: activeSockets, numClients: numActiveClients};
-}
+};
 
 module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
   currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
   console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
-}
+};

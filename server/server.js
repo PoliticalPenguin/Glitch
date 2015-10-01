@@ -9,13 +9,9 @@ var youtubeKey = module.exports.youtubeKey = require(__dirname + '/config.js').y
 //Initializes Express server to serve static files
 var app = express();
 module.exports.app = app;
-
 app.set("port", 3000);
-
 app.use(parser.json());
-
 app.use(express.static(__dirname + '/../Client'));
-
 app.listen(app.get("port"));
 console.log("Express server listening on ", app.get("port"));
 

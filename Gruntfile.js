@@ -1,4 +1,4 @@
-
+//Adding comment to test Travis-CI integration of karma tests
 module.exports = function(grunt) {
 
   grunt.initConfig({

@@ -29,7 +29,6 @@ var activeSockets = [];
 var numActiveClients = 0;
 var chatMessages = [];
 var lastChatIdx = -1;
-var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 var currentPlaylist;
 
 // Configuration variables

@@ -108,15 +108,12 @@ var handlePlaylist = function () {
       playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
       donePlaying = false;
       currentSong = currentPlaylist[0];
-      // console.log(donePlaying);
     }         
 
     
     if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
       donePlaying = true;
       currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
-      // console.log(currentPlaylist);
-      // console.log(donePlaying);
     }
 
     //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
@@ -140,7 +137,6 @@ function analyzeChat() {
       fetchPlaylistFromYouTube(bangs[j], function(results) {
         // Add the top result to our playlist
         currentPlaylist.push(results[0]);
-        // console.log(currentPlaylist);
       });
     }
   }, chatAnalysisTime);

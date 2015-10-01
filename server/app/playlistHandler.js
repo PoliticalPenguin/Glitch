@@ -25,7 +25,7 @@ module.exports.handlePlaylist = function () {
     }
 
     //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
-  }, 1000);
+  }, app.playlistAnalysisTime);
 };
 
 var playSong = function(playlistEntry) {

@@ -29,7 +29,7 @@ var activeSockets = [];
 var numActiveClients = 0;
 var chatMessages = [];
 var lastChatIdx = -1;
-var currentPlaylist;
+var currentPlaylist = [];
 
 // Configuration variables
 var chatAnalysisTime = 5000;
@@ -37,15 +37,12 @@ var chatAnalysisTime = 5000;
 //Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
 var currentSong = module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
-//Read playlist file, parses playlist into an array and run server with the playlist array
-var fetchPlaylistFromFile = function (callback) {
-  fs.readFile(__dirname + '/playlist.json', function read(err, data) {
-    if (err) {
-        throw err;
-    }
-    var playlist = JSON.parse(data);
-    callback(playlist);
-  });
+//starts Server
+
+var startServer = function() {
+  setUpSockets();  
+  handlePlaylist();
+  analyzeChat();
 };
 
 var fetchPlaylistFromYouTube = function (queryString, callback) {
@@ -102,28 +99,30 @@ var setUpSockets = function () {
   console.log('sockets established...');
 };
 
-var handlePlaylist = function (playlist) {
-  currentPlaylist = playlist; //Creates a copy of the playlist; entries will be deleted from this copy as they are played
-  
+
+var handlePlaylist = function () {
   var donePlaying = true;
-  var intervalId; 
+  
+  setInterval(function() {
+    if(donePlaying && currentPlaylist.length > 0) {
+      playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
+      donePlaying = false;
+      currentSong = currentPlaylist[0];
+      // console.log(donePlaying);
+    }         
 
-  if(playlist.length > 0) { // if a playlist with songs in it was passed in
+    
+    if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
+      donePlaying = true;
+      currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
+      // console.log(currentPlaylist);
+      // console.log(donePlaying);
+    }
 
-    intervalId = setInterval(function() {
-      if(moment().isAfter(currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
-        donePlaying = true;
-        currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
-      }
-
-      //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
-      if(donePlaying && currentPlaylist.length > 0) {
-        playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
-        donePlaying = false;
-      }                                      
-    }, 1000);
-  }
+    //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
+  }, 1000);
 };
+
 
 function analyzeChat() {
   setInterval(function() {
@@ -137,10 +136,11 @@ function analyzeChat() {
     }
 
     // For each bang, use the Youtube Search API
-    for (var i = 0; i < bangs.length; i++) {
-      fetchPlaylistFromYouTube(bangs[i], function(results) {
+    for (var j = 0; j < bangs.length; j++) {
+      fetchPlaylistFromYouTube(bangs[j], function(results) {
         // Add the top result to our playlist
         currentPlaylist.push(results[0]);
+        // console.log(currentPlaylist);
       });
     }
   }, chatAnalysisTime);
@@ -183,11 +183,9 @@ var playSong = function(playlistEntry) {
 
 
 // Start running the server
-fetchPlaylistFromFile(function (playlist) {
-  setUpSockets();  
-  handlePlaylist(playlist);
-  analyzeChat();
-});
+
+startServer();
+
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 

@@ -201,3 +201,11 @@ module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
   currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
   console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
 };
+
+module.exports.queueSong = function(youtubeUrl) {
+  if(currentPlaylist.length===0)
+    playSong(youtubeUrl);
+  else
+    currentPlaylist.push(youtubeUrl);
+};
+

@@ -36,8 +36,9 @@ module.exports = function(grunt) {
              grunt: true,
              args: 'nodemon'
         });
-    nodemon.stdout.pipe(process.stdout);
-    nodemon.stderr.pipe(process.stderr);
+    // The lines below are commented out to mute a non-critical error message which is displayed after all node processes are killed after the tests
+    // nodemon.stdout.pipe(process.stdout);
+    // nodemon.stderr.pipe(process.stderr);
   });
 
   grunt.loadNpmTasks('grunt-nodemon');

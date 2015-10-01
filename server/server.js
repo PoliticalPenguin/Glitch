@@ -31,14 +31,14 @@ var chatHandler = require(__dirname+'/app/chatHandler.js');
 // Configuration variables
 module.exports.chatAnalysisTime = 5000;
 
-//starts Server
+// Starts Server
 var startServer = function() {
   socketHandler.setUpSockets();
   playlistHandler.handlePlaylist();
   chatHandler.analyzeChat();
 };
 
-// We centralize our chat messages & playlist as multiple helpers need to interface with them
+// Centralize our chat messages & playlist as multiple helpers need to interface with them
 module.exports.addMessage = function(message) {
   chatMessages.push(message);
 };

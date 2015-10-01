@@ -64,6 +64,7 @@ module.exports.getConnectionInfo = function () {
 };
 
 module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
+  var currentSong = playlistHandler.currentSong;
   currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
   console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
 };

@@ -2,6 +2,7 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+
     "file-creator": {
         "createConfigFile": {
           "server/config.js": function(fs, fd, done) {
@@ -11,9 +12,36 @@ module.exports = function(grunt) {
             done();
           }
         }
-      }
+      },
+    "nodemon": {
+         dev: {
+           script: 'server/server.js'
+         }
+       },
+
+    "shell": {
+          mochaTest: {
+            command: 'npm run mochaTest'
+          },
+          karmaTest: {
+            command: ['npm run karmaTest',
+                      'killall node'].join('&&')
+          }
+        }
   });
 
+  grunt.registerTask('runServer', function () {
+    var nodemon = grunt.util.spawn({
+             cmd: 'grunt',
+             grunt: true,
+             args: 'nodemon'
+        });
+    nodemon.stdout.pipe(process.stdout);
+    nodemon.stderr.pipe(process.stderr);
+  });
+
+  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-file-creator');
   ////////////////////////////////////////////////////
   // Main grunt tasks
@@ -21,5 +49,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', function(n) {
     grunt.task.run([ 'file-creator:createConfigFile' ] );
+  });
+  grunt.registerTask('test', function(n) {
+    grunt.task.run([ 'shell:mochaTest' ] );
+    grunt.task.run([ 'runServer'] );
+    grunt.task.run([ 'shell:karmaTest' ] );
   });
 };

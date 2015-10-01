@@ -1,6 +1,7 @@
+var moment = require('moment');
+
 // Requirements from server.js
 var app = require(__dirname+"../../server.js");
-var currentSong = app.currentSong;
 
 // Initializes io socket server
 var ioPort = 1337;
@@ -19,6 +20,7 @@ module.exports.setUpSockets = function () {
     module.exports.numActiveClients++;
 
     //This if statement stops the server from emitting a "play" message to the clients before the video data has been retrieved via Youtube API
+    var currentSong = app.getCurrentSong();
     if(currentSong.startMoment !== null)
        //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
       socket.emit('play', {url: currentSong.url, title: currentSong.title, time: moment().diff(currentSong.startMoment)});
@@ -29,7 +31,7 @@ module.exports.setUpSockets = function () {
       module.exports.numActiveClients--;
     });
 
-    //chat socket
+    // Handle incoming chat messages
     socket.on('chat message', function(msg){
       console.log('message: ' + msg);
       app.addMessage(msg);

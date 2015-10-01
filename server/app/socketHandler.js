@@ -1,5 +1,5 @@
 var moment = require('moment');
-var app = require(__dirname+"../../server.js");
+var app = require(__dirname+"/../server.js");
 
 // Initializes io socket server
 var ioPort = 1337;

@@ -1,5 +1,5 @@
 var https = require('https');
-var app = require(__dirname+'../../server.js');
+var app = require(__dirname+'/../server.js');
 var chatAnalysisTime = app.chatAnalysisTime;
 var lastChatIdx = -1;
 var fetchPlaylistFromYouTube = function (queryString, callback) {

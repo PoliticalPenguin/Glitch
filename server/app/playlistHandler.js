@@ -1,6 +1,6 @@
 var https = require('https');
 var moment = require('moment');
-var app = require(__dirname+'../../server.js');
+var app = require(__dirname+'/../server.js');
 var socketHandler = require(__dirname+'/socketHandler.js');
 var youtubeKey = app.youtubeKey;
 

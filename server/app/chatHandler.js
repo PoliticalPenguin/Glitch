@@ -4,8 +4,7 @@ var chatAnalysisTime = app.chatAnalysisTime;
 var lastChatIdx = -1;
 var fetchPlaylistFromYouTube = function (queryString, callback) {
   // Fetches only the IDs of the videos we are searching for
-  // default maxResults is 5
-  var requestString = 'https://www.googleapis.com/youtube/v3/search?part=id&fields=items/id/videoId&type=video&videoEmbeddable=true&videoDuration=short&maxResults=5&q='+ queryString + '&key=' + app.youtubeKey;
+  var requestString = 'https://www.googleapis.com/youtube/v3/search?part=id&fields=items/id/videoId&type=video&videoEmbeddable=true&videoDuration=short&maxResults='+app.youtubeResults+'&q='+ queryString + '&key=' + app.youtubeKey;
   https.get(requestString, function(res) {
     var body = '';
     res.on('data', function(chunk) {

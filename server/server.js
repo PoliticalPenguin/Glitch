@@ -31,6 +31,7 @@ var chatHandler = require(__dirname+'/app/chatHandler.js');
 // Configuration variables
 module.exports.chatAnalysisTime = 5000;
 module.exports.playlistAnalysisTime = 1000;
+module.exports.youtubeResults = 5;
 
 // Starts Server
 var startServer = function() {

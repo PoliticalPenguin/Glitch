@@ -1,8 +1,7 @@
-var https = require('https');
 var moment = require('moment');
 var app = require(__dirname+'/../server.js');
 var socketHandler = require(__dirname+'/socketHandler.js');
-var youtubeKey = app.youtubeKey;
+var youtube = require(__dirname+'/youtubeUtilities.js');
 
 // Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
 module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
@@ -30,35 +29,23 @@ module.exports.handlePlaylist = function () {
 
 var playSong = module.exports.playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
-  
-  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 
+  youtube.getSongInfo(parsedEntry, function(object) {
+    var contentDetails = object.items[0].contentDetails;
+    var snippet = object.items[0].snippet;
+    
+    var videoDuration = moment.duration(contentDetails.duration);
 
-  https.get(requestString, function(res) {
-    var body = '';
-    res.on('data', function(chunk) {
-      body += chunk;
-    });
-    res.on('end', function() {
-      var object = JSON.parse(body);
-      var contentDetails = object.items[0].contentDetails;
-      var snippet = object.items[0].snippet;
-      
-      var videoDuration = moment.duration(contentDetails.duration);
+    var end = moment();
+    end.add(videoDuration);
 
-      var end = moment();
-      end.add(videoDuration);
-
-      var newSong = {};
-      newSong.id = parsedEntry[1];
-      newSong.url = playlistEntry;
-      newSong.title = snippet.title;
-      newSong.startMoment = moment();
-      newSong.endMoment = end;
-      console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
-      module.exports.currentSong = newSong;
-      socketHandler.io.emit('play', {url: newSong.url, title: module.exports.currentSong.title, time: 0});
-    });
-  }).on('error', function(e) {
-    console.log("Got error: " + e.message);
-  }); 
+    var newSong = {};
+    newSong.id = parsedEntry[1];
+    newSong.url = playlistEntry;
+    newSong.title = snippet.title;
+    newSong.startMoment = moment();
+    newSong.endMoment = end;
+    console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
+    module.exports.currentSong = newSong;
+    socketHandler.io.emit('play', {url: newSong.url, title: module.exports.currentSong.title, time: 0});
+  });
 };

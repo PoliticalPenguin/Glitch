@@ -20,3 +20,19 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
     console.log("There was an error fetching the music files from Youtube: ", err);
   }); 
 };
+
+module.exports.getSongInfo = function(parsedEntry, callback) {
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + app.youtubeKey; 
+  https.get(requestString, function(res) {
+    var body = '';
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+    res.on('end', function() {
+      var object = JSON.parse(body);
+      callback(object);
+    });
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+  }); 
+};

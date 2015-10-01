@@ -69,7 +69,7 @@ module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
 
 module.exports.queueSong = function(youtubeUrl) {
   if(currentPlaylist.length===0)
-    playSong(youtubeUrl);
+    playlistHandler.playSong(youtubeUrl);
   else
     currentPlaylist.push(youtubeUrl);
 };

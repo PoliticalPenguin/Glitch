@@ -28,7 +28,7 @@ module.exports.handlePlaylist = function () {
   }, app.playlistAnalysisTime);
 };
 
-var playSong = function(playlistEntry) {
+var playSong = module.exports.playSong = function(playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
   
   var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + youtubeKey; 

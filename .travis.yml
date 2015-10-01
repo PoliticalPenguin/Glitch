@@ -2,7 +2,10 @@ language: node_js
 node_js:
 - 4.1.1
 - node
-before_install: npm install -g grunt-cli
+before_install:
+	-npm install -g grunt-cli
+	-cd Client
+	-bower install
 install: npm install
 before_script: grunt build --ytKey=$YT_API_KEY
 env:

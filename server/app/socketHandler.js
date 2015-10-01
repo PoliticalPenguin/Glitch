@@ -1,6 +1,4 @@
 var moment = require('moment');
-
-// Requirements from server.js
 var app = require(__dirname+"../../server.js");
 
 // Initializes io socket server

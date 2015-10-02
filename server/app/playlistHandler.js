@@ -4,7 +4,7 @@ var socketHandler = require(__dirname+'/socketHandler.js');
 var youtube = require(__dirname+'/youtubeUtilities.js');
 
 // Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end  
-module.exports.currentSong = {id: null, url: null, startMoment: null, endMoment: null, title: null};
+module.exports.currentSong = {startMoment: null, endMoment: null, title: null};
 
 module.exports.handlePlaylist = function () {
   var donePlaying = true;

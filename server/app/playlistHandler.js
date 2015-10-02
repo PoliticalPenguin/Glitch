@@ -21,7 +21,7 @@ module.exports.handlePlaylist = function () {
       module.exports.currentSong = currentPlaylist[0];
     }
 
-    
+
     if (moment().isAfter(module.exports.currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
       donePlaying = true;
       currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing

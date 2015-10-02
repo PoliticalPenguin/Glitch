@@ -31,6 +31,7 @@
     "socket.io-client": "^1.3.7"
   },
   "devDependencies": {
+    "jshint": "^2.8.0",
     "karma": "^0.13.10",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",

@@ -20,5 +20,5 @@
   "requireSpaceBeforeBlockStatements": true,
   "requireSpaceBeforeObjectValues": true,
   "requireSpaceBetweenArguments": true,
-  "requireSpacesInForStatement": true,
+  "requireSpacesInForStatement": true
 }

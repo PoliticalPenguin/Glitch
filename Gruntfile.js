@@ -1,11 +1,11 @@
 //Adding comment to test Travis-CI integration of karma tests
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.initConfig({
 
     "file-creator": {
         "createConfigFile": {
-          "server/config.js": function(fs, fd, done) {
+          "server/config.js": function (fs, fd, done) {
             //The option is taking in the API key, which is decrypted and passed
             //to grunt at build time by Travis; note that encryption is repo-specific (i.e., each fork will use different encryption keys)
             fs.writeSync(fd, 'module.exports.youtubeKey = \'' + grunt.option('ytKey') + '\';');
@@ -48,10 +48,10 @@ module.exports = function(grunt) {
   // Main grunt tasks
   ////////////////////////////////////////////////////
 
-  grunt.registerTask('build', function(n) {
+  grunt.registerTask('build', function (n) {
     grunt.task.run([ 'file-creator:createConfigFile' ] );
   });
-  grunt.registerTask('test', function(n) {
+  grunt.registerTask('test', function (n) {
     grunt.task.run([ 'shell:mochaTest' ] );
     grunt.task.run([ 'runServer'] );
     grunt.task.run([ 'shell:karmaTest' ] );

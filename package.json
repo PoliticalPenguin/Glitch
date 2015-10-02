@@ -5,9 +5,11 @@
   "main": "server/server.js",
   "scripts": {
     "test": "grunt test",
+    "lint": "jscs ./",
     "mochaTest": "mocha test/server/serverTest.js",
     "karmaTest": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
+  "pre-commit": "lint",
   "author": "",
   "license": "ISC",
   "dependencies": {

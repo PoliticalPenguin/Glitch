@@ -18,6 +18,7 @@ console.log("Express server listening on ", app.get("port"));
 // Program storage variables
 var chatMessages = [];
 var currentPlaylist = [];
+var lastSongInPlaylist = {};
 
 // Import all modules with our server functionality
 var socketHandler = require(__dirname+'/app/socketHandler.js');
@@ -44,8 +45,12 @@ module.exports.getMessages = function() {
   return chatMessages;
 };
 module.exports.addToPlaylist = function(song) {
-  currentPlaylist.push(song);
-};
+  // Prevent the same song from playing back-to-back
+  if (song !== lastSongInPlaylist) {
+    currentPlaylist.push(song);
+    lastSongInPlaylist = song;
+  }
+}
 module.exports.getPlaylist = function() {
   return currentPlaylist;
 };

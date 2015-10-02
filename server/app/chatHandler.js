@@ -7,9 +7,9 @@ module.exports.analyzeChat = function () {
   setInterval(function () {
     var chatMessages = app.getMessages();
     var bangs = [];
-    for (var i = lastChatIdx + 1; i < chatMessages.length; i++) {
-      var chatMessage = chatMessages[i];
-      if (chatMessage.charAt(0) === "!") {
+    for (var i = lastChatIdx+1; i < chatMessages.length; i++) {
+      var chatMessage = chatMessages[i].text;
+     if (chatMessage.charAt(0) === "!") {
         bangs.push(chatMessage.substr(1));
       }
       lastChatIdx = i;

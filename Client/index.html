@@ -17,11 +17,12 @@
     </div>
     <div class="chat" ng-controller="chatController">
       <ul id="messages">
-        <li class="message" ng-repeat="message in messages track by $index"> {{message}}</li>
+        <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
       </ul>
 
       <form ng-submit="sendMessage()">
-        <input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
+        <b>Username</b> <input name='username' type='text' ng-model='username'/>
+        <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
         <button>Send</button>
       </form>
     </div>

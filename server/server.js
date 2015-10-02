@@ -44,13 +44,13 @@ module.exports.addMessage = function (message) {
 module.exports.getMessages = function () {
   return chatMessages;
 };
-module.exports.addToPlaylist = function(song) {
+module.exports.addToPlaylist = function (song) {
   // Prevent the same song from playing back-to-back
   if (song !== lastSongInPlaylist) {
     currentPlaylist.push(song);
     lastSongInPlaylist = song;
   }
-}
+};
 module.exports.getPlaylist = function () {
   return currentPlaylist;
 };

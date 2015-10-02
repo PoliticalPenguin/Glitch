@@ -5,8 +5,8 @@ var youtube = require(__dirname + '/youtubeUtilities.js');
 
 // Object which represents the current song being played; stores song title, start moment at which server told clients to first play the song, and end moment at which playback should end
 module.exports.currentSong = {
-  startMoment: null, 
-  endMoment: null, 
+  startMoment: null,
+  endMoment: null,
   title: null
 };
 
@@ -36,7 +36,7 @@ var playSong = module.exports.playSong = function (playlistEntry) {
   youtube.getSongInfo(parsedEntry, function (object) {
     var contentDetails = object.items[0].contentDetails;
     var snippet = object.items[0].snippet;
-    
+
     var videoDuration = moment.duration(contentDetails.duration);
 
     var end = moment();
@@ -50,6 +50,10 @@ var playSong = module.exports.playSong = function (playlistEntry) {
     newSong.endMoment = end;
     console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
     module.exports.currentSong = newSong;
-    socketHandler.io.emit('play', {url: newSong.url, title: module.exports.currentSong.title, time: 0});
+    socketHandler.io.emit('play', {
+      url: newSong.url,
+      title: module.exports.currentSong.title,
+      time: 0
+    });
   });
 };

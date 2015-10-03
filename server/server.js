@@ -21,9 +21,9 @@ var currentPlaylist = [];
 var lastSongInPlaylist = {};
 
 // Import all modules with our server functionality
-var socketHandler = require(__dirname+'/app/socketHandler.js');
-var playlistHandler = require(__dirname+'/app/playlistHandler.js');
-var chatHandler = require(__dirname+'/app/chatHandler.js');
+var socketHandler = require(__dirname + '/app/socketHandler.js');
+var playlistHandler = require(__dirname + '/app/playlistHandler.js');
+var chatHandler = require(__dirname + '/app/chatHandler.js');
 
 // Configuration variables
 module.exports.chatAnalysisTime = 2000;
@@ -31,27 +31,27 @@ module.exports.playlistAnalysisTime = 1000;
 module.exports.youtubeResults = 5;
 
 // Starts Server
-var startServer = function() {
+var startServer = function () {
   socketHandler.setUpSockets();
   playlistHandler.handlePlaylist();
   chatHandler.analyzeChat();
 };
 
 // Centralize our chat messages & playlist as multiple helpers need to interface with them
-module.exports.addMessage = function(message) {
+module.exports.addMessage = function (message) {
   chatMessages.push(message);
 };
-module.exports.getMessages = function() {
+module.exports.getMessages = function () {
   return chatMessages;
 };
-module.exports.addToPlaylist = function(song) {
+module.exports.addToPlaylist = function (song) {
   // Prevent the same song from playing back-to-back
   if (song !== lastSongInPlaylist) {
     currentPlaylist.push(song);
     lastSongInPlaylist = song;
   }
-}
-module.exports.getPlaylist = function() {
+};
+module.exports.getPlaylist = function () {
   return currentPlaylist;
 };
 module.exports.getCurrentSong = function () {
@@ -63,7 +63,10 @@ startServer();
 
 //The exported functions below are currently used for testing;  they can be safely deleted (or removed from export) at deployment
 module.exports.getConnectionInfo = function () {
-  return {clientSockets: socketHandler.activeSockets, numClients: socketHandler.numActiveClients};
+  return {
+    clientSockets: socketHandler.activeSockets,
+    numClients: socketHandler.numActiveClients
+  };
 };
 
 module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
@@ -72,10 +75,11 @@ module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
   console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
 };
 
-module.exports.queueSong = function(youtubeUrl) {
-  if(currentPlaylist.length===0)
+module.exports.queueSong = function (youtubeUrl) {
+  if (currentPlaylist.length === 0) {
     playlistHandler.playSong(youtubeUrl);
-  else
+  } else {
     currentPlaylist.push(youtubeUrl);
+  }
 };
 

@@ -45,7 +45,7 @@ describe('glitch Server Integration Tests', function () {
         done();
       });
     });
-  });  
+  });
 
   it('emits "play" messages to clients, which contain a URL (string), title (string) and play time (integer) for each Youtube video', function (done) {
     socket.on('play', function (data) {
@@ -60,7 +60,7 @@ describe('glitch Server Integration Tests', function () {
   });
 
   it('gives clients who connect after a video has started playing a non-zero play time which is equal to the server play time', function (done) {
-    setTimeout(function() {
+    setTimeout(function () {
       var socket2 = io.connect("http://localhost:" + socketPort, {
         transports: ['websocket'],
         'force new connection': true
@@ -86,12 +86,12 @@ describe('glitch Server Integration Tests', function () {
     var numberOfSongsPlayed = 0;
     socket.on('play', function (data) {
       numberOfSongsPlayed++;
-      if(numberOfSongsPlayed > 1) {
+      if (numberOfSongsPlayed > 1) {
         socket.disconnect();
         done();   //Test will pass if the "play" signal is emitted more than once
-      }
-      else
+      } else {
         app.setTimeLeft(500); //Decreases the time remaining for the current song to 500 milliseconds
+      }
     });
   });
 });

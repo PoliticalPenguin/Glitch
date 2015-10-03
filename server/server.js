@@ -11,8 +11,8 @@ var app = express();
 // module.exports.app = app;
 var server = require('http').createServer(app);
 
-server.use(parser.json());
-server.use(express.static(__dirname + '/../Client'));
+app.use(parser.json());
+app.use(express.static(__dirname + '/../Client'));
 
 server.listen(process.env.PORT || 3000);
 

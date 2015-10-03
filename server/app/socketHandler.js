@@ -2,9 +2,9 @@ var moment = require('moment');
 var app = require(__dirname + "/../server.js");
 
 // Initializes io socket server
-var ioPort = process.env.PORT || 1337;
-var io = module.exports.io = require('socket.io')(ioPort);
-console.log("Socket.io server listening on " + ioPort);
+// var ioPort = 1337;
+var io = module.exports.io = require('socket.io').listen(app);
+console.log("Socket.io server listening");
 
 // Keeps track of active clients
 module.exports.activeSockets = [];

@@ -23,3 +23,6 @@ glitch.factory('socket', function ($rootScope) {
     }
   };
 });
+
+
+// window.location.protocol + "//" + window.location.hostname + ":" + 1337

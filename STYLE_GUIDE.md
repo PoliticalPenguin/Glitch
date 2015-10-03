@@ -1,4 +1,4 @@
-## Indentation
+##Indentation
 
 When writing any block of code that is logically subordinate to the line immediately before and after it, that block should be indented two spaces more than the surrounding lines
 
@@ -44,7 +44,7 @@ transmogrify({
 ```
 
 
-## Variable names
+##Variable names
 
 - A single descriptive word is best.
 
@@ -87,7 +87,7 @@ var animals = ['cat', 'dog', 'fish'];
 var array = ['cat', 'dog', 'fish'];
 ```
 
-## Language constructs
+##Language constructs
 
 - Do not use for...in statements with the intent of iterating over a list of numeric keys. Use a for-with-semicolons statement in stead.
 
@@ -142,7 +142,7 @@ if (0 == '') {
 }
 ```
 
-## Semicolons
+##Semicolons
 
 - Don't forget semicolons at the end of lines
 
@@ -186,5 +186,31 @@ var greet = function () {
 var greet = function () {
   alert('hi');
 }
+```
+
+##HTML
+
+- Do not use ids for html elements. Use a class instead.
+
+```
+<!-- good -->
+<img class="lucy" />
+```
+
+```
+<!-- bad -->
+<img id="lucy" />
+```
+
+- Do not include a type=text/javascript" attribute on script tags
+
+```
+<!-- good -->
+<script src="a.js"></script>
+```
+
+```
+<!-- bad -->
+<script src="a.js" type="text/javascript"></script>
 ```
 

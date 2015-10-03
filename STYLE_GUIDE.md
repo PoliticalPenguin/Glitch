@@ -13,9 +13,6 @@ When writing any block of code that is logically subordinate to the line immedia
       if (condition) {
         action();
       }
-```
-
-```
       // bad:
       if (condition) {
       action();
@@ -29,9 +26,6 @@ When writing any block of code that is logically subordinate to the line immedia
       if (condition) {
         action();
       }
-```
-
-```
       // bad:
       if (condition) {
         action();

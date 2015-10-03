@@ -2,46 +2,45 @@
 
 When writing any block of code that is logically subordinate to the line immediately before and after it, that block should be indented two spaces more than the surrounding lines
 
-Do not put any tab characters anywhere in your code. You would do best to stop pressing the tab key entirely.
+  - Do not put any tab characters anywhere in your code. You would do best to stop pressing the tab key entirely.
 
-Increase the indent level for all blocks by two extra spaces
+  - Increase the indent level for all blocks by two extra spaces
 
-When a line opens a block, the next line starts 2 spaces further in than the line that opened
+    - When a line opens a block, the next line starts 2 spaces further in than the line that opened
 
-  // good:
-  if (condition) {
-    action();
-  }
-
-  // bad:
-  if (condition) {
-  action();
-  }
-
-When a line closes a block, that line starts at the same level as the line that opened the block
-
-  // good:
-  if (condition) {
-    action();
-  }
-
-  // bad:
-  if (condition) {
-    action();
-    }
-
-No two lines should ever have more or less than 2 spaces difference in their indentation. Any number of mistakes in the above rules could lead to this, but one example would be:
-
-  // bad:
-  transmogrify({
-    a: {
-      b: function(){
+      // good:
+      if (condition) {
+        action();
       }
-  }});
 
-use sublime's arrow collapsing as a guide. do the collapsing lines seem like they should be 'contained' by the line with an arrow on it?
+      // bad:
+      if (condition) {
+      action();
+      }
 
-able names
+    - When a line closes a block, that line starts at the same level as the line that opened the block
+
+      // good:
+      if (condition) {
+        action();
+      }
+
+      // bad:
+      if (condition) {
+        action();
+        }
+
+    - No two lines should ever have more or less than 2 spaces difference in their indentation. Any number of mistakes in the above rules could lead to this, but one example would be:
+
+      // bad:
+      transmogrify({
+        a: {
+          b: function(){
+          }
+      }});
+
+
+## Variable names
 
 A single descriptive word is best.
 

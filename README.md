@@ -18,4 +18,4 @@ Yilin, Development Team
 
 ## Contributing
 
-Interested in contributing? Check out our [contributions guide](CONTRIBUTING.Md) and [style guide](STYLE_GUIDE.md).
+Interested in contributing? Check out our [contributions guide](CONTRIBUTING.md) and [style guide](STYLE_GUIDE.md).

@@ -142,18 +142,6 @@ When writing any block of code that is logically subordinate to the line immedia
       }
 ```
 
-- Don't use function statements for the entire first half of the course. They introduce a slew of subtle new rules to how the language behaves, and without a clear benefit. Once you and all your peers are expert level in the second half, you can start to use the more (needlessly) complicated option if you like.
-
-```
-      // good:
-      var go = function () {...};
-```
-
-```
-      // bad:
-      function stop () {...};
-```
-
 ## Semicolons
 
 - Don't forget semicolons at the end of lines

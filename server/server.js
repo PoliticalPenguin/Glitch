@@ -8,12 +8,17 @@ module.exports.youtubeKey = process.env['YOUTUBE_KEY'] || require(__dirname + '/
 
 //Initializes Express server to serve static files
 var app = express();
-module.exports.app = app;
-app.set("port", 3000);
-app.use(parser.json());
-app.use(express.static(__dirname + '/../Client'));
-app.listen(process.env.PORT || app.get("port"));
-console.log("Express server listening on ", app.get("port"));
+// module.exports.app = app;
+var server = require('http').createServer(app);
+
+server.set("port", 3000);
+server.use(parser.json());
+server.use(express.static(__dirname + '/../Client'));
+server.listen(process.env.PORT || server.get("port"));
+
+module.exports.server = server;
+
+console.log("Express server listening on ", server.get("port"));
 
 // Program storage variables
 var chatMessages = [];

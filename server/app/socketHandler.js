@@ -35,11 +35,12 @@ module.exports.setUpSockets = function () {
     });
 
     // Handle incoming chat messages
+
     socket.on('chat message', function (msg) {
-      console.log('message: ' + msg);
+      console.log(msg);
       app.addMessage(msg);
       io.emit('chat message', msg);
-    });
+   });
 
     // Echo messages back to client (for use in debugging & testing)
     socket.on('echo', function (obj) {

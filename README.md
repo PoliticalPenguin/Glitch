@@ -1,6 +1,12 @@
-# politicalpenguin
+## Glitch
 
-Team Members and Roles:
+An interactive internet radio experience. Fight for control of the radio dial, pick what plays next!
+
+## Press Release
+
+[press release goes here](#)
+
+## Team Members and Roles:
 
 Anton, Product Owner
 
@@ -9,3 +15,7 @@ Christian, Scrum Master
 Nate, Development Team
 
 Yilin, Development Team
+
+## Contributing
+
+Interested in contributing? Check out our [contributions guide](/CONTRIBUTING.Md) and [style guide](/STYLE_GUIDE.md).

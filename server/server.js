@@ -4,7 +4,7 @@ var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
 
-var youtubeKey = module.exports.youtubeKey = require(__dirname + '/config.js').youtubeKey; //Insert API key from Slack private room
+var youtubeKey = module.exports.youtubeKey = process.env['YOUTUBE_KEY'] || require(__dirname + '/config.js').youtubeKey; //Insert API key from Slack private room
 
 //Initializes Express server to serve static files
 var app = express();

@@ -11,10 +11,10 @@ var app = express();
 // module.exports.app = app;
 var server = require('http').createServer(app);
 
-server.set("port", 3000);
 server.use(parser.json());
 server.use(express.static(__dirname + '/../Client'));
-server.listen(process.env.PORT || server.get("port"));
+
+server.listen(process.env.PORT || 3000);
 
 module.exports.server = server;
 

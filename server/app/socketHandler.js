@@ -36,7 +36,7 @@ module.exports.setUpSockets = function () {
 
     // Handle incoming chat messages
 
-    socket.on('chat message', function(msg){
+    socket.on('chat message', function (msg) {
       console.log(msg);
    });
 

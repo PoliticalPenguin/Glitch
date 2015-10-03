@@ -6,7 +6,10 @@ angular.module('glitch.chat', [])
 
   $scope.sendMessage = function (keyEvent) {
     // console.log($scope.messageText);
-    socket.emit('chat message', {username: $scope.username, text: $scope.messageText});
+    socket.emit('chat message', {
+      username: $scope.username,
+      text: $scope.messageText
+    });
     $scope.messageText = '';
   };
 

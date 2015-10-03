@@ -12,7 +12,7 @@ module.exports.app = app;
 app.set("port", 3000);
 app.use(parser.json());
 app.use(express.static(__dirname + '/../Client'));
-app.listen(app.get("port"));
+app.listen(process.env.PORT || app.get("port"));
 console.log("Express server listening on ", app.get("port"));
 
 // Program storage variables

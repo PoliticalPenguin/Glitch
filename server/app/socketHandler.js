@@ -38,6 +38,8 @@ module.exports.setUpSockets = function () {
 
     socket.on('chat message', function (msg) {
       console.log(msg);
+      app.addMessage(msg);
+      io.emit('chat message', msg);
    });
 
     // Echo messages back to client (for use in debugging & testing)

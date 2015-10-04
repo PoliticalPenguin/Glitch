@@ -21,7 +21,7 @@ describe('The fetchYoutubeResults function', function () {
 });
 
 describe('The getSongInfo function', function () {
-  this.timeout(5000);
+  this.timeout(10000);
 
   it('fetches the snippet, contentDetails, and Id of a song from YouTube', function (done) {
     youtubeUtilities.getSongInfo('izGwDsrQ1eQ', function (err, result) {
@@ -37,7 +37,7 @@ describe('The getSongInfo function', function () {
 });
 
 describe('The playSong function', function () {
-  this.timeout(5000);
+  this.timeout(10000);
 
   it('creates a data object with the url, id, title, startMoment, and endMoment of the current song', function (done) {
     playlistHandler.playSong('https://www.youtube.com/watch?v=izGwDsrQ1eQ', function () {

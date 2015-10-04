@@ -14,10 +14,11 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
       var results = object.items.map(function (item) {
         return 'https://www.youtube.com/watch?v=' + item.id.videoId;
       });
-      callback(results);
+      callback(null, results);
     });
   }).on('error', function (err) {
     console.log("There was an error fetching the music files from Youtube: ", err);
+    callback(err);
   });
 };
 

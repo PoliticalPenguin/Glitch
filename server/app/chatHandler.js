@@ -17,7 +17,7 @@ module.exports.analyzeChat = function () {
 
     // For each bang, use the Youtube Search API
     for (var j = 0; j < bangs.length; j++) {
-      youtube.fetchYoutubeResults(bangs[j], function (results) {
+      youtube.fetchYoutubeResults(bangs[j], function (err, results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
       });

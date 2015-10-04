@@ -23,7 +23,7 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
 };
 
 module.exports.getSongInfo = function (songId, callback) {
-  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId[1] + '&key=' + app.youtubeKey;
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId + '&key=' + app.youtubeKey;
   https.get(requestString, function (res) {
     var body = '';
     res.on('data', function (chunk) {

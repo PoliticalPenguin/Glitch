@@ -30,11 +30,11 @@ module.exports.handlePlaylist = function () {
   }, app.playlistAnalysisTime);
 };
 
-var playSong = module.exports.playSong = function (playlistEntry) {
+var playSong = module.exports.playSong = function (playlistEntry, callback) {
   var parsedEntry = playlistEntry.split('=');
-  youtube.getSongInfo(parsedEntry[1], function (err, object) {
-    var contentDetails = object.items[0].contentDetails;
-    var snippet = object.items[0].snippet;
+  youtube.getSongInfo(parsedEntry[1], function (err, result) {
+    var contentDetails = result.items[0].contentDetails;
+    var snippet = result.items[0].snippet;
 
     var videoDuration = moment.duration(contentDetails.duration);
 
@@ -48,11 +48,16 @@ var playSong = module.exports.playSong = function (playlistEntry) {
     newSong.startMoment = moment();
     newSong.endMoment = end;
     console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
+   
     module.exports.currentSong = newSong;
     socketHandler.io.emit('play', {
       url: newSong.url,
       title: module.exports.currentSong.title,
       time: 0
     });
+
+    if (callback) {
+      callback();
+    }
   });
 };

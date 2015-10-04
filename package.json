@@ -6,7 +6,7 @@
   "scripts": {
     "test": "grunt test",
     "lint": "jscs ./",
-    "mochaTest": "mocha test/server/serverTest.js",
+    "mochaTest": "mocha test/server/serverTest.js test/server/youtubeApiTest.js",
     "karmaTest": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "start": "server/server.js"
   },
@@ -40,7 +40,6 @@
     "karma-chrome-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.2.1",
-    "karma-sinon": "^1.0.4",
     "phantomjs": "^1.9.18",
     "pre-commit": "^1.1.1",
     "requirejs": "^2.1.20",

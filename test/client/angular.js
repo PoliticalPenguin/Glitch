@@ -63,6 +63,34 @@ describe('Client-side Angular', function () {
       });
     });
   });
+
   describe('Chat Message Handling', function () {
+    var $scope;
+    var controller;
+    beforeEach(function () {
+      $scope = {};
+      controller = $controller('chatController', {
+        $scope: $scope
+      });
+    });
+
+    describe('Sending messages', function () {
+      it('emitting a "chat message" event should add messages to messages array in client', function (done) {
+        socket.emit('chat message', {
+          username: 'musicfan1000',
+          text: "I love listening to Careless Whisper while drinking a glass of red wine"
+        });
+        this.timeout(3000);
+        setTimeout(function () {
+          expect($scope.messages.length).to.equal(1);
+          expect($scope.messages[0].username).to.equal('musicfan1000');
+          done();
+        }, 2000);
+      });
+
+
+    });
+
+
   });
 });

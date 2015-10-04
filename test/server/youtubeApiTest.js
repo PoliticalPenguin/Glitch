@@ -1,5 +1,4 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 var app = require(__dirname + '/../../server/server.js');
 var youtubeUtilities = require('../../server/app/youtubeUtilities.js');
 var playlistHandler = require('../../server/app/playlistHandler.js');

@@ -18,7 +18,6 @@ module.exports.handlePlaylist = function () {
     if (donePlaying && currentPlaylist.length > 0) {
       playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
       donePlaying = false;
-      module.exports.currentSong = currentPlaylist[0];
     }
 
 

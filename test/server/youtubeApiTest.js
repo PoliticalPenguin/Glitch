@@ -10,6 +10,7 @@ describe('The fetchYoutubeResults function', function () {
   this.timeout(5000); //Increased time before which a 'timeout' is assumed, due to the Youtube API occasionally taking over 2 seconds to serve a request.
 
   it('fetches an array of video URLs from YouTube', function (done) {
+    // fetchYoutubeResults fetches a list of IDs and URLs only
     youtubeUtilities.fetchYoutubeResults('george+michael', function (err, results) {
       expect(err).to.not.exist;
       expect(results).to.be.instanceof(Array);
@@ -44,7 +45,7 @@ describe('The playSong function', function () {
       expect(playlistHandler.currentSong.url).to.be.a("string");
       expect(/^https:\/\/www.youtube.com\/watch\?v=/.test(playlistHandler.currentSong.url)).to.be.true;
       //make sure it's playing the song we want
-      expect(/careless whisper/i.test(playlistHandler.currentSong.title)).to.be.true
+      expect(/careless whisper/i.test(playlistHandler.currentSong.title)).to.be.true;
       expect(playlistHandler.currentSong.id).to.be.a("string");
       expect(playlistHandler.currentSong.startMoment).to.be.an.instanceof(Object);
       expect(playlistHandler.currentSong.endMoment).to.be.an.instanceof(Object);

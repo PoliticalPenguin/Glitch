@@ -32,7 +32,7 @@ module.exports.handlePlaylist = function () {
 
 var playSong = module.exports.playSong = function (playlistEntry) {
   var parsedEntry = playlistEntry.split('=');
-  youtube.getSongInfo(parsedEntry[1], function (object) {
+  youtube.getSongInfo(parsedEntry[1], function (err, object) {
     var contentDetails = object.items[0].contentDetails;
     var snippet = object.items[0].snippet;
 

@@ -22,8 +22,8 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
   });
 };
 
-module.exports.getSongInfo = function (songIdallback) {
-  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId + '&key=' + app.youtubeKey;
+module.exports.getSongInfo = function (songId, callback) {
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId[1] + '&key=' + app.youtubeKey;
   https.get(requestString, function (res) {
     var body = '';
     res.on('data', function (chunk) {
@@ -31,9 +31,10 @@ module.exports.getSongInfo = function (songIdallback) {
     });
     res.on('end', function () {
       var object = JSON.parse(body);
-      callback(object);
+      callback(null, object);
     });
-  }).on('error', function (e) {
-    console.log("Got error: " + e.message);
+  }).on('error', function (err) {
+    callback(err);
+    console.log("Got error: " + err.message);
   });
 };

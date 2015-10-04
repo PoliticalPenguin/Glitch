@@ -14,7 +14,7 @@ var server = require('http').createServer(app);
 app.use(parser.json());
 app.use(express.static(__dirname + '/../Client'));
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 1337);
 
 module.exports.server = server;
 

@@ -2,16 +2,16 @@
 1 verbose cli [ '/usr/local/bin/node',
 1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'run',
-1 verbose cli   'mochaTest' ]
+1 verbose cli   'karmaTest' ]
 2 info using npm@2.11.3
 3 info using node@v0.12.7
-4 verbose run-script [ 'premochaTest', 'mochaTest', 'postmochaTest' ]
-5 info premochaTest glitch-server@1.0.0
-6 info mochaTest glitch-server@1.0.0
+4 verbose run-script [ 'prekarmaTest', 'karmaTest', 'postkarmaTest' ]
+5 info prekarmaTest glitch-server@1.0.0
+6 info karmaTest glitch-server@1.0.0
 7 verbose unsafe-perm in lifecycle true
-8 info glitch-server@1.0.0 Failed to exec mochaTest script
-9 verbose stack Error: glitch-server@1.0.0 mochaTest: `mocha test/server/serverTest.js`
-9 verbose stack Exit status 6
+8 info glitch-server@1.0.0 Failed to exec karmaTest script
+9 verbose stack Error: glitch-server@1.0.0 karmaTest: `karma start --single-run --browsers PhantomJS`
+9 verbose stack Exit status 1
 9 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:213:16)
 9 verbose stack     at EventEmitter.emit (events.js:110:17)
 9 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
@@ -21,17 +21,17 @@
 10 verbose pkgid glitch-server@1.0.0
 11 verbose cwd /Users/yilinxu/Desktop/politicalpenguin
 12 error Darwin 15.0.0
-13 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "mochaTest"
+13 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "karmaTest"
 14 error node v0.12.7
 15 error npm  v2.11.3
 16 error code ELIFECYCLE
-17 error glitch-server@1.0.0 mochaTest: `mocha test/server/serverTest.js`
-17 error Exit status 6
-18 error Failed at the glitch-server@1.0.0 mochaTest script 'mocha test/server/serverTest.js'.
+17 error glitch-server@1.0.0 karmaTest: `karma start --single-run --browsers PhantomJS`
+17 error Exit status 1
+18 error Failed at the glitch-server@1.0.0 karmaTest script 'karma start --single-run --browsers PhantomJS'.
 18 error This is most likely a problem with the glitch-server package,
 18 error not with npm itself.
 18 error Tell the author that this fails on your system:
-18 error     mocha test/server/serverTest.js
+18 error     karma start --single-run --browsers PhantomJS
 18 error You can get their info via:
 18 error     npm owner ls glitch-server
 18 error There is likely additional logging output above.

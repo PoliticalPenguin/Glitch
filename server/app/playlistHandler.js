@@ -48,7 +48,6 @@ var playSong = module.exports.playSong = function (playlistEntry, callback) {
     newSong.startMoment = moment();
     newSong.endMoment = end;
     console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
-   
     module.exports.currentSong = newSong;
     socketHandler.io.emit('play', {
       url: newSong.url,

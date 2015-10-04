@@ -30,7 +30,7 @@ describe('The getSongInfo function', function () {
       expect(result.items).to.have.length(1);
 
       expect(result.items[0].snippet).to.be.instanceof(Object);
-      expect(result.items[0].contentDetails).to.be.instanceof(Object); 
+      expect(result.items[0].contentDetails).to.be.instanceof(Object);
       done();
     });
   });
@@ -51,5 +51,5 @@ describe('The playSong function', function () {
 
       done();
     });
-  })
-})
+  });
+});

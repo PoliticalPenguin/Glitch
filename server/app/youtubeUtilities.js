@@ -22,8 +22,8 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
   });
 };
 
-module.exports.getSongInfo = function (parsedEntry, callback) {
-  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + app.youtubeKey;
+module.exports.getSongInfo = function (songIdallback) {
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId + '&key=' + app.youtubeKey;
   https.get(requestString, function (res) {
     var body = '';
     res.on('data', function (chunk) {

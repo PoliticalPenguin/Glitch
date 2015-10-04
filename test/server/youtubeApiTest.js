@@ -43,8 +43,8 @@ describe('The playSong function', function () {
     playlistHandler.playSong('https://www.youtube.com/watch?v=izGwDsrQ1eQ', function () {
       expect(playlistHandler.currentSong.url).to.be.a("string");
       expect(/^https:\/\/www.youtube.com\/watch\?v=/.test(playlistHandler.currentSong.url)).to.be.true;
-
-      expect(playlistHandler.currentSong.title).to.be.a("string");
+      //make sure it's playing the song we want
+      expect(/careless whisper/i.test(playlistHandler.currentSong.title)).to.be.true
       expect(playlistHandler.currentSong.id).to.be.a("string");
       expect(playlistHandler.currentSong.startMoment).to.be.an.instanceof(Object);
       expect(playlistHandler.currentSong.endMoment).to.be.an.instanceof(Object);

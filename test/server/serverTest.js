@@ -94,5 +94,15 @@ describe('glitch Server Integration Tests', function () {
       }
     });
   });
+
+  it('Should accept votes for the next song', function (done) {
+    for (var i = 0; i < 10; i++) {
+      socket.emit('chat message', {
+        username: "Whatever",
+        text: "!tswift"
+      });
+    }
+    app.setTimeLeft(500); // ISSUE: how do we make sure the chat analysis has run?
+  });
 });
 

@@ -25,15 +25,15 @@ var chatMessages = [];
 var currentPlaylist = [];
 var lastSongInPlaylist = {};
 
+// Configuration variables
+module.exports.chatAnalysisTime = 250;
+module.exports.playlistAnalysisTime = 1000;
+module.exports.youtubeResults = 5;
+
 // Import all modules with our server functionality
 var socketHandler = require(__dirname + '/app/socketHandler.js');
 var playlistHandler = require(__dirname + '/app/playlistHandler.js');
 var chatHandler = require(__dirname + '/app/chatHandler.js');
-
-// Configuration variables
-module.exports.chatAnalysisTime = 2000;
-module.exports.playlistAnalysisTime = 1000;
-module.exports.youtubeResults = 5;
 
 // Starts Server
 var startServer = function () {

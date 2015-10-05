@@ -1,11 +1,13 @@
 var app = require(__dirname + '/../server.js');
 var youtube = require(__dirname + '/youtubeUtilities.js');
 var sockets = require(__dirname + '/socketHandler.js');
+var playlist = require(__dirname + '/playlistHandler.js');
 var chatAnalysisTime = app.emptyChatAnalysisTime;
 var lastChatIdx = -1;
 
 var specialBangs = {
   next: function () {
+    playlist.playNext();
   }
 };
 

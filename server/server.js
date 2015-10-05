@@ -44,8 +44,11 @@ var startServer = function () {
 
 // Centralize our chat messages & playlist as multiple helpers need to interface with them
 module.exports.addMessage = function (message) {
-  chatMessages.push(message);
+  if (message.text.match(/^[\x20-\x7E]+$/)) {
+    chatMessages.push(message);
+  }
 };
+
 module.exports.getMessages = function () {
   return chatMessages;
 };

@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var app = require('../../server/server.js');
 var socketPort = 1337;
 var moment = require('moment');
+var chat = require('../../server/app/chatHandler.js');
 
 var io = require('socket.io-client');
 var socket;
@@ -93,6 +94,20 @@ describe('glitch Server Integration Tests', function () {
         app.setTimeLeft(500); //Decreases the time remaining for the current video to 500 milliseconds
       }
     });
+  });
+
+  it('should be able to calculate the frequency of emitted keywords', function () {
+    var bangs = ['next', 'next', 'tswift', 'tswift', 'tswift'];
+    expect(chat.countBangs(bangs)).to.eql({
+      next: 2,
+      tswift: 3
+    });
+  });
+
+  it('should be able to calculate the top requested song', function () {
+    var bangs = ['test', 'test', 'tswift', 'tswift', 'tswift', 'next', 'next', 'next', 'next', 'next'];
+    var bangCount = chat.countBangs(bangs);
+    expect(chat.getTopSong(bangs, bangCount)).to.equal('tswift');
   });
 });
 

@@ -24,13 +24,13 @@ module.exports.setUpSockets = function () {
     module.exports.numActiveClients++;
 
     //This if statement stops the server from emitting a "play" message to the clients before the video data has been retrieved via Youtube API
-    var currentSong = app.getCurrentSong();
-    if (currentSong.startMoment !== null) {
+    var currentVideo = app.getCurrentVideo();
+    if (currentVideo.startMoment !== null) {
        //The 'time' property is the number of milliseconds that the client should skip ahead when it plays the Youtube video
       socket.emit('play', {
-        url: currentSong.url,
-        title: currentSong.title,
-        time: moment().diff(currentSong.startMoment)
+        url: currentVideo.url,
+        title: currentVideo.title,
+        time: moment().diff(currentVideo.startMoment)
       });
     }
 
@@ -55,7 +55,7 @@ module.exports.setUpSockets = function () {
   console.log('sockets established...');
 };
 
-// Attaches song info to the playlist and emits it to client
+// Attaches video info to the playlist and emits it to client
 module.exports.emitPlaylist = function () {
   var playlist = app.getPlaylist();
   var fetchedEntries = 0;
@@ -64,19 +64,19 @@ module.exports.emitPlaylist = function () {
     var playlistEntry = playlist[i];
     var parsedEntry = playlistEntry.split('=');
 
-    // Retrieve song information for every song in the playlist
-    youtube.getSongInfo(parsedEntry[1], function (position, err, result) {
+    // Retrieve video information for every video in the playlist
+    youtube.getVideoInfo(parsedEntry[1], function (position, err, result) {
       fetchedEntries++;
       var snippet = result.items[0].snippet;
 
-      var newSong = {};
-      newSong.id = parsedEntry[1];
-      newSong.url = playlistEntry;
-      newSong.title = snippet.title;
+      var newVideo = {};
+      newVideo.id = parsedEntry[1];
+      newVideo.url = playlistEntry;
+      newVideo.title = snippet.title;
 
-      playlistWithInfo[position] = newSong;
+      playlistWithInfo[position] = newVideo;
 
-      // Once we have retrieved information for every song, emit the playlist
+      // Once we have retrieved information for every video, emit the playlist
       if (fetchedEntries === playlist.length) {
         io.emit('playlist', {
           playlist: playlistWithInfo

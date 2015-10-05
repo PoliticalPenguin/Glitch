@@ -42,7 +42,7 @@ describe('Client-side Angular', function () {
       });
     });
 
-    describe('Song History', function () {
+    describe('Video History', function () {
       it('Should have an empty initial playlist', function () {
         expect($scope.pastVideos).to.have.length(0);
       });

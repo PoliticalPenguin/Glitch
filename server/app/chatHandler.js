@@ -19,6 +19,7 @@ module.exports.analyzeChat = function () {
   var analyzeChat = function () {
     var chatMessages = app.getMessages();
     var bangs = [];
+    var initChatIdx = lastChatIdx;
     for (var i = lastChatIdx + 1; i < chatMessages.length; i++) {
       var chatMessage = chatMessages[i].text;
      if (chatMessage.charAt(0) === "!") {
@@ -43,7 +44,7 @@ module.exports.analyzeChat = function () {
 
     // Determine if any action needs to be taken due to special bangs
     for (var bang in specialBangs) {
-      if (bangCounts[bang] && bangCounts[bang] / chatMessages.length > app.bangRatios[bang]) {
+      if (bangCounts[bang] && bangCounts[bang] / (lastChatIdx - initChatIdx) > app.bangRatios[bang]) {
         specialBangs[bang]();
       }
     }

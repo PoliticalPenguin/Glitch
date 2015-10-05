@@ -56,7 +56,7 @@ module.exports.emitPlaylist = function () {
   var playlist = app.getPlaylist();
   for (var i = 0; i < playlist.length; i++) {
     var parsedEntry = playlist[i].split('=');
-    youtube.getSongInfo(parsedEntry, function(object) {
+    youtube.getSongInfo(parsedEntry, function (object) {
       console.log(object);
       var contentDetails = object.items[0].contentDetails;
       var snippet = object.items[0].snippet;

@@ -15,9 +15,23 @@ module.exports.analyzeChat = function () {
       lastChatIdx = i;
     }
 
-    // For each bang, use the Youtube Search API
+    // Calculate top-desired bang
+    var bangCounts = {};
     for (var j = 0; j < bangs.length; j++) {
-      youtube.fetchYoutubeResults(bangs[j], function (err, results) {
+      bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
+    }
+    var topBang = null;
+    var topBangCount = 0;
+    for (var bang in bangCounts) {
+      if (bangCounts[bang] > topBangCount) {
+        topBang = bang;
+        topBangCount = bangCounts[bang];
+      }
+    }
+
+    // Add the top-desired bang to the playlist
+    if (topBang) {
+        youtube.fetchYoutubeResults(topBang, function (results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
       });

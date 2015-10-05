@@ -103,5 +103,27 @@ describe('Client-side Angular', function () {
         }, 2000);
       });
     });
+
+    describe('Chat processing - client side', function () {
+      it('sending a chat with the appropriate keywords should fetch a music video, which should start playing when the queue is empty', function () {
+        $scope.username = 'musicfan1';
+        $scope.messsageText = '!careless whisper';
+        $scope.sendMessage();
+        
+
+        controller = $controller('youtubeController', {
+          $scope: {}
+        });        
+        
+        this.timeout(10000);
+        setTimeout(function () {
+          console.log('$scope.currentVideo.title: ', $scope.currentVideo.title);
+          expect($scope.currentVideo.title).to.not.equal('Waiting For Server...');
+          expect(/careless whisper/i.test($scope.currentVideo.title)).to.be.true;
+          done();
+        }, 6000);
+
+      });
+    });
   });
 });

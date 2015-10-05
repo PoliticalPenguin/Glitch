@@ -26,6 +26,10 @@ module.exports = function (grunt) {
           karmaTest: {
             command: ['npm run karmaTest',
                       'killall node'].join('&&')
+          },
+          karmaTestWin: {
+            command: ['npm run karmaTest',
+                      'taskkill /f /im node.exe'].join('&&')
           }
         }
   });
@@ -55,5 +59,12 @@ module.exports = function (grunt) {
     grunt.task.run([ 'shell:mochaTest' ] );
     grunt.task.run([ 'runServer'] );
     grunt.task.run([ 'shell:karmaTest' ] );
+  });
+
+  //for testing in a Windows environment
+  grunt.registerTask('testWin', function (n) {
+    grunt.task.run([ 'shell:mochaTest' ] );
+    grunt.task.run([ 'runServer'] );
+    grunt.task.run([ 'shell:karmaTestWin' ] );
   });
 };

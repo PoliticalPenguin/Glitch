@@ -18,7 +18,6 @@ module.exports.handlePlaylist = function () {
     if (donePlaying && currentPlaylist.length > 0) {
       playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
       donePlaying = false;
-      module.exports.currentSong = currentPlaylist[0];
     }
 
 
@@ -31,11 +30,11 @@ module.exports.handlePlaylist = function () {
   }, app.playlistAnalysisTime);
 };
 
-var playSong = module.exports.playSong = function (playlistEntry) {
+var playSong = module.exports.playSong = function (playlistEntry, callback) {
   var parsedEntry = playlistEntry.split('=');
-  youtube.getSongInfo(parsedEntry, function (object) {
-    var contentDetails = object.items[0].contentDetails;
-    var snippet = object.items[0].snippet;
+  youtube.getSongInfo(parsedEntry[1], function (err, result) {
+    var contentDetails = result.items[0].contentDetails;
+    var snippet = result.items[0].snippet;
 
     var videoDuration = moment.duration(contentDetails.duration);
 
@@ -55,5 +54,9 @@ var playSong = module.exports.playSong = function (playlistEntry) {
       title: module.exports.currentSong.title,
       time: 0
     });
+
+    if (callback) {
+      callback();
+    }
   });
 };

@@ -14,15 +14,16 @@ module.exports.fetchYoutubeResults = function (queryString, callback) {
       var results = object.items.map(function (item) {
         return 'https://www.youtube.com/watch?v=' + item.id.videoId;
       });
-      callback(results);
+      callback(null, results);
     });
   }).on('error', function (err) {
     console.log("There was an error fetching the music files from Youtube: ", err);
+    callback(err);
   });
 };
 
-module.exports.getSongInfo = function (parsedEntry, callback) {
-  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + parsedEntry[1] + '&key=' + app.youtubeKey;
+module.exports.getSongInfo = function (songId, callback) {
+  var requestString = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=' + songId + '&key=' + app.youtubeKey;
   https.get(requestString, function (res) {
     var body = '';
     res.on('data', function (chunk) {
@@ -30,9 +31,10 @@ module.exports.getSongInfo = function (parsedEntry, callback) {
     });
     res.on('end', function () {
       var object = JSON.parse(body);
-      callback(object);
+      callback(null, object);
     });
-  }).on('error', function (e) {
-    console.log("Got error: " + e.message);
+  }).on('error', function (err) {
+    callback(err);
+    console.log("Got error: " + err.message);
   });
 };

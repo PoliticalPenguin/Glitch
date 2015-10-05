@@ -17,10 +17,10 @@
       <h3>Use a ! before your chat message to add to Glitch playlist!</h3>
     </div>
     <div class="chat" ng-controller="chatController">
-      <ul id="messages">
+      <ul id="messages" scroll-glue>
         <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
       </ul>
-
+      
       <form ng-submit="sendMessage()">
         <b>Username</b> <input name='username' type='text' ng-model='username'/>
         <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
@@ -32,6 +32,7 @@
   <!--javascripts-->  
   <script src="bower_components/socket.io-client/socket.io.js"></script>
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-scroll-glue/src/scrollglue.js"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
   <script src="app.js"></script> 

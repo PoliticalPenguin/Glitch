@@ -1,5 +1,4 @@
-/* Angular controller for dealing with chat messages */
-angular.module('glitch.chat', [])
+angular.module('glitch.chat', ['luegg.directives'])
 .controller('chatController', function ($scope, socket) {
 
   $scope.messages = [];

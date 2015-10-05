@@ -65,7 +65,9 @@ form button {
 #messages { 
   list-style-type: none; 
   margin: 0; 
-  padding: 0; 
+  padding: 0;
+  height: 588px;
+  overflow: auto; 
 }
 
 #messages li { 

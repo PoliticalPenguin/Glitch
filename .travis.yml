@@ -6,7 +6,5 @@ before_install:
 - npm install -g bower
 install:
 - npm install
-- cd Client
-- bower install
 before_script: grunt build --ytKey=$YT_API_KEY
 script: grunt test

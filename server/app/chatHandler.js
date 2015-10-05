@@ -1,3 +1,7 @@
+/*These functions relate to selecting a subset of chat messages to analyze, pulling from each chat message only the text
+which will be used for Youtube queries (in the current version of Glitch, only those messages preceded by an '!').*/
+
+
 var app = require(__dirname + '/../server.js');
 var youtube = require(__dirname + '/youtubeUtilities.js');
 var sockets = require(__dirname + '/socketHandler.js');

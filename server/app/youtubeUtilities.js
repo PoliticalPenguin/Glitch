@@ -1,3 +1,7 @@
+/*Youtube-API related utility functions that are used by the server to search for Youtube videos and retrieve video-specific
+information. All functions which directly communicate with the Youtube API should be added here.*/
+
+
 var https = require('https');
 var app = require(__dirname + '/../server.js');
 module.exports.fetchYoutubeResults = function (queryString, callback) {

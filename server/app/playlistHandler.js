@@ -1,3 +1,7 @@
+/*Playlist related functions.  Playlist processing should be conducted server-side; the client should only be communicated
+with when a new video is played from the playlist*/
+
+
 var moment = require('moment');
 var app = require(__dirname + '/../server.js');
 var socketHandler = require(__dirname + '/socketHandler.js');

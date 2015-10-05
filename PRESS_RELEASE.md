@@ -17,28 +17,27 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > A shared TRL-esque experience where viewers can vote for what video to watch next!
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > Glitch targets people who enjoy actively watching multimedia in a social setting.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Glitch is a platform which allows users to simultaneously view a dynamic, user-generated queue of videos and chat in real time.  Glitch users enjoy the fun of watching, listening to and discussing videos that they and other Glitch users have voted for.  
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > Despite the increasing prevalance of social media, the act of watching Youtube videos remains a solitary activity. Internet users who watch Youtube videos can only discuss and share videos asynchronously, by leaving comments on a Youtube video or sharing a link to a Youtube video on Facebook or some other social media platform. 
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > Glitch turns the solitary experience of watching Youtube videos into a social one.  By integrating chat functionality into the viewing experience, Glitch users can discuss what they're watching with other Glitch users as the videos play.  
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
-
-## How to Get Started ##
-  > Describe how easy it is to get started.
+  > "I'm so proud to own this product." - Anton Solomonik
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "I was so alone, watching Youtube videos by myself in my living room with the lights off.  Now I can watch Minecraft Youtube videos with other like-minded folk, who see the world as an elaborate series of cubes.  Thanks Glitch!" - Minney McMinerson
 
-## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > "Before Glitch, my wife and I would watch our own queues of Youtube videos after a long day of work.  Initially, we tried to keep up with each other's video queues by commenting on each other's videos.  But leaving Youtube comments and playing 'comment tag' became too difficult to keep up with, and we eventually gave up on sharing Youtube videos with each other altogether.  Once we started using Glitch, everything changed.  We now can watch the same queue of Youtube videos from our own computers and even chat about Taylor Swift's new hair color while watching 'Wild Dreams.' Glitch saved our marriage.  Thanks Glitch!"
+
+## How to Get Started / Closing and Call to Action ##
+  > Just go to our website (https://sleepy-falls-4522.herokuapp.com/) and start watching and sharing your favorite Youtube videos.  The only thing you need to know is that any video request should be preceded with an exclamation mark, (e.g., "!tswift")

@@ -1,4 +1,4 @@
-//Adding comment to test Travis-CI integration of karma tests
+//Gruntfile used to build config file containing the Youtube API Key and to run server and client tests
 module.exports = function (grunt) {
 
   grunt.initConfig({

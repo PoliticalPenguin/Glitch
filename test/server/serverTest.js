@@ -109,5 +109,22 @@ describe('glitch Server Integration Tests', function () {
     var bangCount = chat.countBangs(bangs);
     expect(chat.getTopSong(bangs, bangCount)).to.equal('tswift');
   });
+
+  it('should be able to emit new playlists', function (done) {
+    chat.addTopSong('tswift');
+    socket.on('playlist', function (playlist) {
+      expect(playlist.playlist[0].id).to.equal('IdneKLhsWOQ');
+      done();
+    });
+  });
+
+  it('should be able to skip songs', function (done) {
+    app.queueSong('https://www.youtube.com/watch?v=3PEGDGxZdzA');
+    var bangs = ['next', 'next', 'next'];
+    socket.on('play', function (song) {
+      expect(song.title).to.equal('Emancipator - Anthem (2006)');
+      done();
+    });
+  });
 });
 

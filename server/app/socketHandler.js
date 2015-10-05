@@ -54,28 +54,28 @@ module.exports.setUpSockets = function () {
 // Handles behaviors for all sockets
 module.exports.emitPlaylist = function () {
   var playlist = app.getPlaylist();
+  var fetchedEntries = 0;
+  var playlistWithInfo = [];
   for (var i = 0; i < playlist.length; i++) {
-    var parsedEntry = playlist[i].split('=');
-    youtube.getSongInfo(parsedEntry, function (object) {
-      console.log(object);
-      var contentDetails = object.items[0].contentDetails;
-      var snippet = object.items[0].snippet;
-
-      var videoDuration = moment.duration(contentDetails.duration);
-
-      var end = moment();
-      end.add(videoDuration);
+    var playlistEntry = playlist[i];
+    var parsedEntry = playlistEntry.split('=');
+    youtube.getSongInfo(parsedEntry[1], function (position, err, result) {
+      fetchedEntries++;
+      var contentDetails = result.items[0].contentDetails;
+      var snippet = result.items[0].snippet;
 
       var newSong = {};
       newSong.id = parsedEntry[1];
       newSong.url = playlistEntry;
       newSong.title = snippet.title;
-      newSong.startMoment = moment();
-      newSong.endMoment = end;
-      console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
-    });
+
+      playlistWithInfo[position] = newSong;
+      if (fetchedEntries === playlist.length) {
+        console.log(playlist);
+        io.emit('playlist', {
+          playlist: playlist
+        });
+      }
+    }.bind(null, i));
   }
-  io.emit('playlist', {
-    playlist: playlist
-  });
 };

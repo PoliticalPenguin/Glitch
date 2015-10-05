@@ -55,6 +55,8 @@ var playSong = module.exports.playSong = function (playlistEntry, callback) {
       time: 0
     });
 
+    socketHandler.emitPlaylist();
+
     if (callback) {
       callback();
     }

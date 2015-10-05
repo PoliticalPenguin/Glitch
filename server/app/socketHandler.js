@@ -74,9 +74,8 @@ module.exports.emitPlaylist = function () {
 
       // Once we have retrieved information for every song, emit the playlist
       if (fetchedEntries === playlist.length) {
-        console.log(playlist);
         io.emit('playlist', {
-          playlist: playlist
+          playlist: playlistWithInfo
         });
       }
     }.bind(null, i));

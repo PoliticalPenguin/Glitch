@@ -8,7 +8,8 @@
     "lint": "jscs ./",
     "mochaTest": "mocha test/server/serverTest.js test/server/youtubeApiTest.js",
     "karmaTest": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
-    "start": "server/server.js"
+    "start": "server/server.js",
+    "postinstall": "cd Client && bower install" 
   },
   "pre-commit": "lint",
   "author": "",
@@ -26,7 +27,6 @@
     "grunt-shell": "^1.1.2",
     "mocha": "^2.3.3",
     "moment": "^2.10.6",
-    "mysql": "^2.9.0",
     "nodemon": "^1.7.0",
     "phantomjs": "^1.9.18",
     "socket.io": "^1.3.7",

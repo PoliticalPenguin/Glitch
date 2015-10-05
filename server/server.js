@@ -4,16 +4,21 @@ var parser = require('body-parser');
 var moment = require('moment');
 var fs = require('fs');
 
-var youtubeKey = module.exports.youtubeKey = require(__dirname + '/config.js').youtubeKey; //Insert API key from Slack private room
+module.exports.youtubeKey = process.env['YOUTUBE_KEY'] || require(__dirname + '/config.js').youtubeKey; //Insert API key from Slack private room
 
 //Initializes Express server to serve static files
 var app = express();
-module.exports.app = app;
-app.set("port", 3000);
+// module.exports.app = app;
+var server = require('http').createServer(app);
+
 app.use(parser.json());
 app.use(express.static(__dirname + '/../Client'));
-app.listen(app.get("port"));
-console.log("Express server listening on ", app.get("port"));
+
+server.listen(process.env.PORT || 1337);
+
+module.exports.server = server;
+
+console.log("Express server listening");
 
 // Program storage variables
 var chatMessages = [];

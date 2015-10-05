@@ -6,7 +6,7 @@ describe('Client-side Angular', function () {
   beforeEach(module('glitch'));
   var $controller;
   var socket;
-  this.timeout(3000);
+  this.timeout(5000);
   beforeEach(inject(function (_$controller_, _socket_) {
     $controller = _$controller_;
     socket = _socket_;
@@ -111,7 +111,6 @@ describe('Client-side Angular', function () {
         $scope.username = 'musicfan1';
         $scope.messageText = '!careless whisper';
         $scope.sendMessage();
-        this.timeout(5000);
         $scope = {};
         controller = $controller('youtubeController', {
           $scope: $scope

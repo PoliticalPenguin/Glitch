@@ -1,3 +1,6 @@
+/*  Glitch server, which uses HTTP (Express) to serve static files and sockets (Socket.io) to handle all chat messages
+and event messages between clients and server. */
+
 var express = require('express');
 var https = require('https');
 var parser = require('body-parser');

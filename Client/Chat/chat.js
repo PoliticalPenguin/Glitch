@@ -1,3 +1,4 @@
+/* Angular controller for dealing with chat messages */
 angular.module('glitch.chat', [])
 .controller('chatController', function ($scope, socket) {
 

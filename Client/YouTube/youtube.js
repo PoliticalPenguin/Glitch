@@ -1,4 +1,4 @@
-// Angular controller for dealing with playback of youtube songs
+/* Angular controller for dealing with playback of youtube songs */
 angular.module('glitch.youtube', [
   'youtube-embed'
   ])

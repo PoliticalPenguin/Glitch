@@ -1,3 +1,7 @@
+/*Socket handling initialization and listener functions which are used by the server to initialize and handle communication
+between the client and the server.  All chat-related and video-related communication between the client and server should
+be handled via sockets.*/
+
 var moment = require('moment');
 var app = require(__dirname + "/../server.js");
 

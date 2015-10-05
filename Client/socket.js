@@ -1,3 +1,4 @@
+/*Factory which the chat client will use to create Socket.io 'on' and 'emit' listeners in connection with chat-related functionality.*/
 glitch.factory('socket', function ($rootScope) {
    var socket;
    if (window.__karma__) {
@@ -26,6 +27,3 @@ glitch.factory('socket', function ($rootScope) {
     }
   };
 });
-
-
-// window.location.protocol + "//" + window.location.hostname + ":" + 1337

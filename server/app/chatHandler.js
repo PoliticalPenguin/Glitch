@@ -1,10 +1,10 @@
 var app = require(__dirname + '/../server.js');
 var youtube = require(__dirname + '/youtubeUtilities.js');
-var chatAnalysisTime = app.chatAnalysisTime;
+var chatAnalysisTime = app.emptyChatAnalysisTime;
 var lastChatIdx = -1;
 
 module.exports.analyzeChat = function () {
-  setInterval(function () {
+  var analyzeChat = function () {
     var chatMessages = app.getMessages();
     var bangs = [];
     for (var i = lastChatIdx + 1; i < chatMessages.length; i++) {
@@ -22,5 +22,14 @@ module.exports.analyzeChat = function () {
         app.addToPlaylist(results[0]);
       });
     }
-  }, chatAnalysisTime);
+
+    // Re-run the chat handler
+    if (app.getPlaylist().length <= 1) {
+      chatAnalysisTime = app.emptyChatAnalysisTime;
+    } else {
+      chatAnalysisTime = app.fullChatAnalysisTime;
+    }
+    setTimeout(analyzeChat, chatAnalysisTime);
+  };
+  setTimeout(analyzeChat, chatAnalysisTime);
 };

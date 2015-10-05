@@ -51,7 +51,7 @@ module.exports.setUpSockets = function () {
   console.log('sockets established...');
 };
 
-// Handles behaviors for all sockets
+// Attaches song info to the playlist and emits it to client
 module.exports.emitPlaylist = function () {
   var playlist = app.getPlaylist();
   var fetchedEntries = 0;
@@ -59,6 +59,8 @@ module.exports.emitPlaylist = function () {
   for (var i = 0; i < playlist.length; i++) {
     var playlistEntry = playlist[i];
     var parsedEntry = playlistEntry.split('=');
+
+    // Retrieve song information for every song in the playlist
     youtube.getSongInfo(parsedEntry[1], function (position, err, result) {
       fetchedEntries++;
       var snippet = result.items[0].snippet;
@@ -69,6 +71,8 @@ module.exports.emitPlaylist = function () {
       newSong.title = snippet.title;
 
       playlistWithInfo[position] = newSong;
+
+      // Once we have retrieved information for every song, emit the playlist
       if (fetchedEntries === playlist.length) {
         console.log(playlist);
         io.emit('playlist', {

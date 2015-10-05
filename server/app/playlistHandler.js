@@ -14,24 +14,27 @@ module.exports.currentSong = {
   title: null
 };
 
+var donePlaying = true;
 module.exports.handlePlaylist = function () {
-  var donePlaying = true;
 
   setInterval(function () {
     var currentPlaylist = app.getPlaylist();
     if (donePlaying && currentPlaylist.length > 0) {
       playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
       donePlaying = false;
-    }
-
-
-    if (moment().isAfter(module.exports.currentSong.endMoment)) {  //If the current time is after the endTime for the current entry being played
-      donePlaying = true;
-      currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
+    } else if (moment().isAfter(module.exports.currentSong.endMoment) && !donePlaying) {  //If the current time is after the endTime for the current entry being played
+      playNext();
     }
 
     //Plays the first element from the playlist if the current song is done playing and the playlist is not empty
   }, app.playlistAnalysisTime);
+};
+
+// Play the next song in the queue. Used when a song ends or when voted upon
+var playNext = module.exports.playNext = function () {
+  donePlaying = true;
+  var currentPlaylist = app.getPlaylist();
+  currentPlaylist.shift();  //Deletes an entry from the playlist after it is done playing
 };
 
 var playSong = module.exports.playSong = function (playlistEntry, callback) {

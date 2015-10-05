@@ -5,8 +5,15 @@ which will be used for Youtube queries (in the current version of Glitch, only t
 var app = require(__dirname + '/../server.js');
 var youtube = require(__dirname + '/youtubeUtilities.js');
 var sockets = require(__dirname + '/socketHandler.js');
+var playlist = require(__dirname + '/playlistHandler.js');
 var chatAnalysisTime = app.emptyChatAnalysisTime;
 var lastChatIdx = -1;
+
+var specialBangs = {
+  next: function () {
+    playlist.playNext();
+  }
+};
 
 module.exports.analyzeChat = function () {
   var analyzeChat = function () {
@@ -20,23 +27,30 @@ module.exports.analyzeChat = function () {
       lastChatIdx = i;
     }
 
-    // Calculate top-desired bang
+    // Calculate top-desired song
     var bangCounts = {};
     for (var j = 0; j < bangs.length; j++) {
       bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
     }
-    var topBang = null;
-    var topBangCount = 0;
+    var topSong = null;
+    var topSongCount = 0;
     for (var bang in bangCounts) {
-      if (bangCounts[bang] > topBangCount) {
-        topBang = bang;
-        topBangCount = bangCounts[bang];
+      if (bangCounts[bang] > topSongCount && (!specialBangs[bang])) {
+        topSong = bang;
+        topSongCount = bangCounts[bang];
+      }
+    }
+
+    // Determine if any action needs to be taken due to special bangs
+    for (var bang in specialBangs) {
+      if (bangCounts[bang] && bangCounts[bang] / chatMessages.length > app.bangRatios[bang]) {
+        specialBangs[bang]();
       }
     }
 
     // Add the top-desired bang to the playlist and broadcast to clients
-    if (topBang) {
-        youtube.fetchYoutubeResults(topBang, function (err, results) {
+    if (topSong) {
+        youtube.fetchYoutubeResults(topSong, function (err, results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
         sockets.emitPlaylist();

@@ -33,6 +33,9 @@ module.exports.emptyChatAnalysisTime = 250;
 module.exports.fullChatAnalysisTime = 10000;
 module.exports.playlistAnalysisTime = 1000;
 module.exports.youtubeResults = 5;
+module.exports.bangRatios = {
+  next: .5
+};
 
 // Import all modules with our server functionality
 var socketHandler = require(__dirname + '/app/socketHandler.js');

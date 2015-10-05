@@ -1,5 +1,6 @@
 var app = require(__dirname + '/../server.js');
 var youtube = require(__dirname + '/youtubeUtilities.js');
+var sockets = require(__dirname + '/socketHandler.js');
 var chatAnalysisTime = app.emptyChatAnalysisTime;
 var lastChatIdx = -1;
 
@@ -29,13 +30,14 @@ module.exports.analyzeChat = function () {
       }
     }
 
-    // Add the top-desired bang to the playlist
+    // Add the top-desired bang to the playlist and broadcast to clients
     if (topBang) {
         youtube.fetchYoutubeResults(topBang, function (results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
       });
     }
+    sockets.emitPlaylist();
 
     // Re-run the chat handler
     if (app.getPlaylist().length <= 1) {

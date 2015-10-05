@@ -11,7 +11,7 @@ console.log("Socket.io server listening");
 module.exports.activeSockets = [];
 module.exports.numActiveClients = 0;
 
-// Handles all socket behavior
+// Handles all behavior specific to a given socket
 module.exports.setUpSockets = function () {
   io.on('connection', function (socket) {
     module.exports.activeSockets.push(socket);
@@ -48,4 +48,13 @@ module.exports.setUpSockets = function () {
     });
   });
   console.log('sockets established...');
+};
+
+// Handles behaviors for all sockets
+module.exports.emitPlaylist = function () {
+  var playlist = app.getPlaylist();
+  console.log(playlist);
+  io.emit('playlist', {
+    playlist: playlist
+  });
 };

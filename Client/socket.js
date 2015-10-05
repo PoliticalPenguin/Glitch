@@ -1,7 +1,13 @@
-// var socket = io.connect(window.location.protocol+"//"+window.location.hostname+":"+1337);
+ 
 
 glitch.factory('socket', function ($rootScope) {
-  var socket = io.connect();
+   var socket;
+   if (window.__karma__) {
+     socket = io.connect(window.location.protocol + "//" + window.location.hostname + ":" + 1337);
+   }
+   else {
+     socket = io.connect();
+   }
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {

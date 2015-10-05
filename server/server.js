@@ -26,7 +26,8 @@ var currentPlaylist = [];
 var lastSongInPlaylist = {};
 
 // Configuration variables
-module.exports.chatAnalysisTime = 250;
+module.exports.emptyChatAnalysisTime = 250;
+module.exports.fullChatAnalysisTime = 10000;
 module.exports.playlistAnalysisTime = 1000;
 module.exports.youtubeResults = 5;
 

@@ -1,5 +1,6 @@
 var moment = require('moment');
 var app = require(__dirname + "/../server.js");
+var youtube = require(__dirname + "/youtubeUtilities.js");
 
 // Initializes io socket server
 // var ioPort = 1337;
@@ -11,7 +12,7 @@ console.log("Socket.io server listening");
 module.exports.activeSockets = [];
 module.exports.numActiveClients = 0;
 
-// Handles all socket behavior
+// Handles all behavior specific to a given socket
 module.exports.setUpSockets = function () {
   io.on('connection', function (socket) {
     module.exports.activeSockets.push(socket);
@@ -48,4 +49,35 @@ module.exports.setUpSockets = function () {
     });
   });
   console.log('sockets established...');
+};
+
+// Attaches song info to the playlist and emits it to client
+module.exports.emitPlaylist = function () {
+  var playlist = app.getPlaylist();
+  var fetchedEntries = 0;
+  var playlistWithInfo = [];
+  for (var i = 0; i < playlist.length; i++) {
+    var playlistEntry = playlist[i];
+    var parsedEntry = playlistEntry.split('=');
+
+    // Retrieve song information for every song in the playlist
+    youtube.getSongInfo(parsedEntry[1], function (position, err, result) {
+      fetchedEntries++;
+      var snippet = result.items[0].snippet;
+
+      var newSong = {};
+      newSong.id = parsedEntry[1];
+      newSong.url = playlistEntry;
+      newSong.title = snippet.title;
+
+      playlistWithInfo[position] = newSong;
+
+      // Once we have retrieved information for every song, emit the playlist
+      if (fetchedEntries === playlist.length) {
+        io.emit('playlist', {
+          playlist: playlistWithInfo
+        });
+      }
+    }.bind(null, i));
+  }
 };

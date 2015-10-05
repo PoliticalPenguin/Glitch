@@ -28,17 +28,17 @@ module.exports.analyzeChat = function () {
       lastChatIdx = i;
     }
 
-    // Calculate top-desired song
+    // Calculate top-desired video
     var bangCounts = {};
     for (var j = 0; j < bangs.length; j++) {
       bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
     }
-    var topSong = null;
-    var topSongCount = 0;
+    var topVideo = null;
+    var topVideoCount = 0;
     for (var bang in bangCounts) {
-      if (bangCounts[bang] > topSongCount && (!specialBangs[bang])) {
-        topSong = bang;
-        topSongCount = bangCounts[bang];
+      if (bangCounts[bang] > topVideoCount && (!specialBangs[bang])) {
+        topVideo = bang;
+        topVideoCount = bangCounts[bang];
       }
     }
 
@@ -50,8 +50,8 @@ module.exports.analyzeChat = function () {
     }
 
     // Add the top-desired bang to the playlist and broadcast to clients
-    if (topSong) {
-        youtube.fetchYoutubeResults(topSong, function (err, results) {
+    if (topVideo) {
+        youtube.fetchYoutubeResults(topVideo, function (err, results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
         sockets.emitPlaylist();

@@ -26,7 +26,7 @@ console.log("Express server listening");
 // Program storage variables
 var chatMessages = [];
 var currentPlaylist = [];
-var lastSongInPlaylist = {};
+var lastVideoInPlaylist = {};
 
 // Configuration variables
 module.exports.emptyChatAnalysisTime = 250;
@@ -59,18 +59,18 @@ module.exports.addMessage = function (message) {
 module.exports.getMessages = function () {
   return chatMessages;
 };
-module.exports.addToPlaylist = function (song) {
-  // Prevent the same song from playing back-to-back
-  if (song !== lastSongInPlaylist) {
-    currentPlaylist.push(song);
-    lastSongInPlaylist = song;
+module.exports.addToPlaylist = function (video) {
+  // Prevent the same video from playing back-to-back
+  if (video !== lastVideoInPlaylist) {
+    currentPlaylist.push(video);
+    lastVideoInPlaylist = video;
   }
 };
 module.exports.getPlaylist = function () {
   return currentPlaylist;
 };
-module.exports.getCurrentSong = function () {
-  return playlistHandler.currentSong;
+module.exports.getCurrentVideo = function () {
+  return playlistHandler.currentVideo;
 };
 
 // Start running the server
@@ -85,14 +85,14 @@ module.exports.getConnectionInfo = function () {
 };
 
 module.exports.setTimeLeft = function (millisecondsBeforeEnd) {
-  var currentSong = playlistHandler.currentSong;
-  currentSong.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
-  console.log('The end time for the current song has been modified to end ' + currentSong.endMoment.calendar());
+  var currentVideo = playlistHandler.currentVideo;
+  currentVideo.endMoment = moment().add(millisecondsBeforeEnd, 'ms');
+  console.log('The end time for the current video has been modified to end ' + currentVideo.endMoment.calendar());
 };
 
-module.exports.queueSong = function (youtubeUrl) {
+module.exports.queueVideo = function (youtubeUrl) {
   if (currentPlaylist.length === 0) {
-    playlistHandler.playSong(youtubeUrl);
+    playlistHandler.playVideo(youtubeUrl);
   } else {
     currentPlaylist.push(youtubeUrl);
   }

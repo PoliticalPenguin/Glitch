@@ -15,7 +15,7 @@ describe('glitch Server Integration Tests', function () {
       'force new connection': true
     };
     socket = io.connect("http://localhost:" + socketPort, options);
-    app.queueSong('https://www.youtube.com/watch?v=3PEGDGxZdzA');
+    app.queueVideo('https://www.youtube.com/watch?v=3PEGDGxZdzA');
   });
 
   afterEach(function () {
@@ -75,22 +75,22 @@ describe('glitch Server Integration Tests', function () {
 
   it('records the time at which the video was started and calculates the time at which playback of the video should end', function (done) {
     socket.on('play', function (data) {
-      var currentSong = app.getCurrentSong();
-      expect(currentSong.endMoment.diff(currentSong.startMoment)).to.be.above(0);  //Checks to see that there is a calculated end time which is after the start time
+      var currentVideo = app.getCurrentVideo();
+      expect(currentVideo.endMoment.diff(currentVideo.startMoment)).to.be.above(0);  //Checks to see that there is a calculated end time which is after the start time
       done();
     });
   });
 
-  it('automatically emits a new "play" message to clients after the current song has been completed', function (done) {
-    app.queueSong('https://www.youtube.com/watch?v=3PEGDGxZdzA');
-    var numberOfSongsPlayed = 0;
+  it('automatically emits a new "play" message to clients after the current video has been completed', function (done) {
+    app.queueVideo('https://www.youtube.com/watch?v=3PEGDGxZdzA');
+    var numberOfVideosPlayed = 0;
     socket.on('play', function (data) {
-      numberOfSongsPlayed++;
-      if (numberOfSongsPlayed > 1) {
+      numberOfVideosPlayed++;
+      if (numberOfVideosPlayed > 1) {
         socket.disconnect();
         done();   //Test will pass if the "play" signal is emitted more than once
       } else {
-        app.setTimeLeft(500); //Decreases the time remaining for the current song to 500 milliseconds
+        app.setTimeLeft(500); //Decreases the time remaining for the current video to 500 milliseconds
       }
     });
   });

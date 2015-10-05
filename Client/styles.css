@@ -8,7 +8,7 @@ h1 {
   font-size: 3em;
 }
 
-.playlist-song {
+.playlist-video {
   border: 1px solid green;
 }
 
@@ -19,7 +19,7 @@ h1 {
   text-align: center;
 }
 
-.song-hist {
+.video-hist {
   float: left;
   padding: 15px;
   width: 20%;

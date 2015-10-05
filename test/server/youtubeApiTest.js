@@ -21,10 +21,10 @@ describe('The fetchYoutubeResults function', function () {
 
 });
 
-describe('The getSongInfo function', function () {
+describe('The getVideoInfo function', function () {
   this.timeout(10000);
-  it('fetches the snippet, contentDetails, and Id of a song from YouTube', function (done) {
-    youtubeUtilities.getSongInfo('izGwDsrQ1eQ', function (err, result) {
+  it('fetches the snippet, contentDetails, and Id of a video from YouTube', function (done) {
+    youtubeUtilities.getVideoInfo('izGwDsrQ1eQ', function (err, result) {
       expect(result.items).to.exist;
       expect(result.items).to.be.instanceof(Array);
       expect(result.items).to.have.length(1);
@@ -35,17 +35,17 @@ describe('The getSongInfo function', function () {
   });
 });
 
-describe('The playSong function', function () {
+describe('The playVideo function', function () {
   this.timeout(10000);
-  it('creates a data object with the url, id, title, startMoment, and endMoment of the current song', function (done) {
-    playlistHandler.playSong('https://www.youtube.com/watch?v=izGwDsrQ1eQ', function () {
-      expect(playlistHandler.currentSong.url).to.be.a("string");
-      expect(/^https:\/\/www.youtube.com\/watch\?v=/.test(playlistHandler.currentSong.url)).to.be.true;
-      //make sure it's playing the song we want
-      expect(/careless whisper/i.test(playlistHandler.currentSong.title)).to.be.true;
-      expect(playlistHandler.currentSong.id).to.be.a("string");
-      expect(playlistHandler.currentSong.startMoment).to.be.an.instanceof(Object);
-      expect(playlistHandler.currentSong.endMoment).to.be.an.instanceof(Object);
+  it('creates a data object with the url, id, title, startMoment, and endMoment of the current video', function (done) {
+    playlistHandler.playVideo('https://www.youtube.com/watch?v=izGwDsrQ1eQ', function () {
+      expect(playlistHandler.currentVideo.url).to.be.a("string");
+      expect(/^https:\/\/www.youtube.com\/watch\?v=/.test(playlistHandler.currentVideo.url)).to.be.true;
+      //make sure it's playing the video we want
+      expect(/careless whisper/i.test(playlistHandler.currentVideo.title)).to.be.true;
+      expect(playlistHandler.currentVideo.id).to.be.a("string");
+      expect(playlistHandler.currentVideo.startMoment).to.be.an.instanceof(Object);
+      expect(playlistHandler.currentVideo.endMoment).to.be.an.instanceof(Object);
 
       done();
     });

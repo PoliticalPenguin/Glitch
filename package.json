@@ -9,7 +9,7 @@
     "mochaTest": "mocha test/server/serverTest.js test/server/youtubeApiTest.js",
     "karmaTest": "./node_modules/.bin/karma start --single-run --browsers PhantomJS",
     "start": "server/server.js",
-    "postinstall": "cd Client && bower install" 
+    "postinstall": "cd Client && bower install"
   },
   "pre-commit": "lint",
   "author": "",
@@ -17,6 +17,7 @@
   "dependencies": {
     "angularjs-scroll-glue": "^2.0.4",
     "body-parser": "^1.14.0",
+    "bower": "^1.5.3",
     "chai": "^3.3.0",
     "express": "^4.13.3",
     "express-session": "^1.11.3",

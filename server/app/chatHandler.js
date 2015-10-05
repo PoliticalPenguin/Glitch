@@ -5,7 +5,8 @@ var chatAnalysisTime = app.emptyChatAnalysisTime;
 var lastChatIdx = -1;
 
 var specialBangs = {
-  next: 'next'
+  next: function () {
+  }
 };
 
 module.exports.analyzeChat = function () {
@@ -20,7 +21,7 @@ module.exports.analyzeChat = function () {
       lastChatIdx = i;
     }
 
-    // Calculate top-desired bang
+    // Calculate top-desired song
     var bangCounts = {};
     for (var j = 0; j < bangs.length; j++) {
       bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
@@ -28,9 +29,16 @@ module.exports.analyzeChat = function () {
     var topSong = null;
     var topSongCount = 0;
     for (var bang in bangCounts) {
-      if (bangCounts[bang] > topSongCount) {
+      if (bangCounts[bang] > topSongCount && (!specialBangs[bang])) {
         topSong = bang;
         topSongCount = bangCounts[bang];
+      }
+    }
+
+    // Determine if any action needs to be taken due to special bangs
+    for (var bang in specialBangs) {
+      if (bangCounts[bang] && bangCounts[bang] / chatMessages.length > app.bangRatios[bang]) {
+        specialBangs[bang]();
       }
     }
 

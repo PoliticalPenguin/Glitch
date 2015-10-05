@@ -31,7 +31,7 @@ Once the project moves into development, the press release can be used as a touc
 ## Solution ##
   > Glitch turns the solitary experience of watching Youtube videos into a social one.  By integrating chat functionality into the viewing experience, Glitch users can discuss what they're watching with other Glitch users as the videos play.  
 
-## Quote from You ##
+## Quote from the Glitch Team ##
   > "I'm so proud to own this product." - Anton Solomonik
 
 ## Customer Quote ##

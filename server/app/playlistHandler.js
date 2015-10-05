@@ -18,11 +18,7 @@ module.exports.handlePlaylist = function () {
     if (donePlaying && currentPlaylist.length > 0) {
       playSong(currentPlaylist[0]); //Updates the currentSong object with the first song in the playlist
       donePlaying = false;
-    }
-
-
-    if (moment().isAfter(module.exports.currentSong.endMoment) && !donePlaying) {  //If the current time is after the endTime for the current entry being played
-      console.log('PLAY NEXT');
+    } else if (moment().isAfter(module.exports.currentSong.endMoment) && !donePlaying) {  //If the current time is after the endTime for the current entry being played
       playNext();
     }
 

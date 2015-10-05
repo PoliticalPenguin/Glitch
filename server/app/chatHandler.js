@@ -35,9 +35,9 @@ module.exports.analyzeChat = function () {
         youtube.fetchYoutubeResults(topBang, function (results) {
         // Add the top result to our playlist
         app.addToPlaylist(results[0]);
+        sockets.emitPlaylist();
       });
     }
-    sockets.emitPlaylist();
 
     // Re-run the chat handler
     if (app.getPlaylist().length <= 1) {

@@ -1,5 +1,6 @@
 var moment = require('moment');
 var app = require(__dirname + "/../server.js");
+var youtube = require(__dirname + "/youtubeUtilities.js");
 
 // Initializes io socket server
 // var ioPort = 1337;
@@ -53,7 +54,27 @@ module.exports.setUpSockets = function () {
 // Handles behaviors for all sockets
 module.exports.emitPlaylist = function () {
   var playlist = app.getPlaylist();
-  console.log(playlist);
+  for (var i = 0; i < playlist.length; i++) {
+    var parsedEntry = playlist[i].split('=');
+    youtube.getSongInfo(parsedEntry, function(object) {
+      console.log(object);
+      var contentDetails = object.items[0].contentDetails;
+      var snippet = object.items[0].snippet;
+
+      var videoDuration = moment.duration(contentDetails.duration);
+
+      var end = moment();
+      end.add(videoDuration);
+
+      var newSong = {};
+      newSong.id = parsedEntry[1];
+      newSong.url = playlistEntry;
+      newSong.title = snippet.title;
+      newSong.startMoment = moment();
+      newSong.endMoment = end;
+      console.log(newSong.title + ' is now playing.  Video will end ' + newSong.endMoment.calendar());
+    });
+  }
   io.emit('playlist', {
     playlist: playlist
   });

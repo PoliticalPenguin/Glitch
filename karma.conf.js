@@ -20,6 +20,7 @@ module.exports = function (config) {
       'Client/bower_components/angular-mocks/angular-mocks.js',
       "Client/bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js",
       "Client/bower_components/angular-socket.io-mock/angular-socket.io-mock.js",
+      "Client/bower_components/angular-scroll-glue/src/scrollglue.js",
       "Client/app.js",
       "Client/socket.js",
       "Client/Chat/chat.js",

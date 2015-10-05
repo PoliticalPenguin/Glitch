@@ -4,7 +4,6 @@ var expect = chai.expect;
 
 describe('Client-side Angular', function () {
   beforeEach(module('glitch'));
-
   var $controller;
   var socket;
 

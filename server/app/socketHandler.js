@@ -61,7 +61,6 @@ module.exports.emitPlaylist = function () {
     var parsedEntry = playlistEntry.split('=');
     youtube.getSongInfo(parsedEntry[1], function (position, err, result) {
       fetchedEntries++;
-      var contentDetails = result.items[0].contentDetails;
       var snippet = result.items[0].snippet;
 
       var newSong = {};

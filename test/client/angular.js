@@ -74,11 +74,11 @@ describe('Client-side Angular', function () {
       });
     });
 
-    describe('Sending messages', function () {
-      it('emitting a "chat message" event should add messages to messages array in client', function (done) {
+    describe('Chat message socket events', function () {
+      it('emitting a "chat message" socket event from the client should add the appropriate message to the messages array in client', function (done) {
         socket.emit('chat message', {
           username: 'musicfan1000',
-          text: "I love listening to Careless Whisper while drinking a glass of red wine"
+          text: 'I love listening to Careless Whisper while drinking a glass of red wine'
         });
         this.timeout(3000);
         setTimeout(function () {
@@ -87,10 +87,21 @@ describe('Client-side Angular', function () {
           done();
         }, 2000);
       });
-
-
     });
 
-
+    describe('Send message button', function () {
+      it('sendMessage function should add the appropriate message to the messages array in client', function (done) {
+        var oldMessagesLength = $scope.messages.length;
+        $scope.username = 'musicfan1';
+        $scope.messsageText = 'I love listening to Careless Whisper while drinking a glass of red wine';
+        $scope.sendMessage();
+        this.timeout(3000);
+        setTimeout(function () {
+          expect($scope.messages.length).to.equal(oldMessagesLength + 1);
+          expect($scope.messages[0].username).to.equal('musicfan1');
+          done();
+        }, 2000);
+      });
+    });
   });
 });

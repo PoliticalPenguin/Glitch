@@ -56,7 +56,7 @@ describe('Client-side Angular', function () {
         });
 
         setTimeout(function () {
-          expect($scope.pastVideos.length).to.not.equal(0);
+          expect($scope.currentVideo.id).to.not.equal(null);
           done();
         }, 2000);
       });

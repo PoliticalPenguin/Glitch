@@ -14,7 +14,8 @@
     <div class="video-div">
       <p class='video-info'> {{ currentVideo.title }}</p>
       <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player'></youtube-video>
-      <h3>Use a ! before your chat message to add to Glitch playlist!</h3>
+      <h3>Use a ! before your chat message to add to Glitch playlist</h3>
+      <h5>Type !next to switch the video to the next one in the playlist</h5>
     </div>
     <div class="chat" ng-controller="chatController">
       <ul id="messages" scroll-glue>

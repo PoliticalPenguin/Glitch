@@ -12,7 +12,7 @@ angular.module('glitch.youtube', [
 
   // Stores the currently playing video
   $scope.currentVideo = {
-    id: 0,
+    id: null,
     url: 'https://www.youtube.com/watch?v=8tPnX7OPo0Q',
     title: "Waiting For Server..."
   };

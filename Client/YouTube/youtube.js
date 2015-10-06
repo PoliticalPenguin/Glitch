@@ -7,8 +7,12 @@ angular.module('glitch.youtube', [
   $scope.pastVideos = [
   ];
 
+  $scope.upcomingVideos = [
+  ];
+
   // Stores the currently playing video
   $scope.currentVideo = {
+    id: 0,
     url: 'https://www.youtube.com/watch?v=8tPnX7OPo0Q',
     title: "Waiting For Server..."
   };
@@ -21,8 +25,18 @@ angular.module('glitch.youtube', [
 
   // Listen for a broadcast from the server
   socket.on('play', function (data) {
+    if ($scope.currentVideo.id !== 0) {
+      $scope.pastVideos.push($scope.currentVideo.title);
+    }
+
     $scope.currentVideo.url = data.url + "#t=" + (data.time / 1000) + "s";
     $scope.currentVideo.title = data.title;
-    $scope.pastVideos.push(data.title);
+    $scope.currentVideo.id = data.id;
+
+    $scope.upcomingVideos.shift();
+  });
+
+  socket.on('playlist', function (data) {
+    $scope.upcomingVideos = data.playlist;
   });
 });

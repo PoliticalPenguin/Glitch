@@ -8,12 +8,13 @@ h1 {
   font-size: 3em;
 }
 
-.playlist-video {
-  border: 1px solid green;
+.current {
+  color: white;
+  background-color: #BBB;
 }
 
 
-.video-div {
+.video-div, .video-upcoming {
   margin: auto;
   width: 50%;
   text-align: center;
@@ -23,6 +24,10 @@ h1 {
   float: left;
   padding: 15px;
   width: 20%;
+}
+
+.video-upcoming {
+  padding: 15px;
 }
 
 li {

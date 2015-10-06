@@ -25,7 +25,7 @@ angular.module('glitch.youtube', [
 
   // Listen for a broadcast from the server
   socket.on('play', function (data) {
-    if ($scope.currentVideo.id !== 0) {
+    if ($scope.currentVideo.id !== null) {
       $scope.pastVideos.push($scope.currentVideo.title);
     }
 

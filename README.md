@@ -4,7 +4,7 @@ An interactive internet radio experience. Fight for control of the radio dial, p
 
 ## Press Release
 
-[press release goes here](#)
+[Glitch Press Release](PRESS_RELEASE.md)
 
 ## Team Members and Roles:
 

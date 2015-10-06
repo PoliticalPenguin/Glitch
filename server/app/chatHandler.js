@@ -15,6 +15,38 @@ var specialBangs = {
   }
 };
 
+// Count the frequency of all bangs
+var countBangs = module.exports.countBangs = function (bangs) {
+  var bangCounts = {};
+  for (var j = 0; j < bangs.length; j++) {
+    bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
+  }
+  return bangCounts;
+};
+
+// Calculate top-desired song
+var getTopSong = module.exports.getTopSong = function (bangs, bangCounts) {
+  var topSong = null;
+  var topSongCount = 0;
+  for (var bang in bangCounts) {
+    if (bangCounts[bang] > topSongCount && (!specialBangs[bang])) {
+      topSong = bang;
+      topSongCount = bangCounts[bang];
+    }
+  }
+
+  return topSong;
+};
+
+// Add the top result to our playlist
+var addTopSong = module.exports.addTopSong = function (topSong) {
+  youtube.fetchYoutubeResults(topSong, function (err, results) {
+    app.addToPlaylist(results[0]);
+    sockets.emitPlaylist();
+  });
+};
+
+// Periodically analyze chat and take appropriate action
 module.exports.analyzeChat = function () {
   var analyzeChat = function () {
     var chatMessages = app.getMessages();
@@ -28,19 +60,8 @@ module.exports.analyzeChat = function () {
       lastChatIdx = i;
     }
 
-    // Calculate top-desired video
-    var bangCounts = {};
-    for (var j = 0; j < bangs.length; j++) {
-      bangCounts[bangs[j]] = (bangCounts[bangs[j]] || 0) + 1;
-    }
-    var topVideo = null;
-    var topVideoCount = 0;
-    for (var bang in bangCounts) {
-      if (bangCounts[bang] > topVideoCount && (!specialBangs[bang])) {
-        topVideo = bang;
-        topVideoCount = bangCounts[bang];
-      }
-    }
+    var bangCounts = countBangs(bangs);
+    var topSong = getTopSong(bangs, bangCounts);
 
     // Determine if any action needs to be taken due to special bangs
     for (var bang in specialBangs) {
@@ -50,12 +71,8 @@ module.exports.analyzeChat = function () {
     }
 
     // Add the top-desired bang to the playlist and broadcast to clients
-    if (topVideo) {
-        youtube.fetchYoutubeResults(topVideo, function (err, results) {
-        // Add the top result to our playlist
-        app.addToPlaylist(results[0]);
-        sockets.emitPlaylist();
-      });
+    if (topSong) {
+      addTopSong(topSong);
     }
 
     // Re-run the chat handler

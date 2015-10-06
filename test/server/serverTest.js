@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var app = require('../../server/server.js');
 var socketPort = 1337;
 var moment = require('moment');
+var chat = require('../../server/app/chatHandler.js');
 
 var io = require('socket.io-client');
 var socket;
@@ -92,6 +93,50 @@ describe('glitch Server Integration Tests', function () {
       } else {
         app.setTimeLeft(500); //Decreases the time remaining for the current video to 500 milliseconds
       }
+    });
+  });
+
+  it('should be able to calculate the frequency of emitted keywords', function () {
+    var bangs = ['next', 'next', 'tswift', 'tswift', 'tswift'];
+    expect(chat.countBangs(bangs)).to.eql({
+      next: 2,
+      tswift: 3
+    });
+  });
+
+  it('should be able to calculate the top requested song', function () {
+    var bangs = ['test', 'test', 'tswift', 'tswift', 'tswift', 'next', 'next', 'next', 'next', 'next'];
+    var bangCount = chat.countBangs(bangs);
+    expect(chat.getTopSong(bangs, bangCount)).to.equal('tswift');
+  });
+
+  it('should be able to emit new playlists', function (done) {
+    chat.addTopSong('tswift');
+    this.timeout(5000);
+    socket.on('playlist', function (playlist) {
+      expect(playlist.playlist[0].id).to.equal('IdneKLhsWOQ');
+      done();
+    });
+  });
+
+  it('should be able to skip songs', function (done) {
+    app.queueVideo('https://www.youtube.com/watch?v=3PEGDGxZdzA'); // Emancipator - Anthem (2006)
+    app.queueVideo('https://www.youtube.com/watch?v=IdneKLhsWOQ'); // Taylor Swift - Wildest Dreams
+    var bangs = ['next', 'next', 'next'];
+    for (var i = 0; i < bangs.length; i++) {
+      socket.emit('chat messsage', {
+        username: "blank",
+        text: bangs[i]
+      });
+    }
+
+    var numberOfVideosPlayed = 0;
+    socket.on('play', function (song) {
+      if (numberOfVideosPlayed === 1) {
+        expect(song.title).to.equal('Taylor Swift - Wildest Dreams');
+        done();
+      }
+      numberOfVideosPlayed++;
     });
   });
 });

@@ -30,7 +30,7 @@ var lastVideoInPlaylist = {};
 
 // Configuration variables
 module.exports.emptyChatAnalysisTime = 250;
-module.exports.fullChatAnalysisTime = 10000;
+module.exports.fullChatAnalysisTime = 5000;
 module.exports.playlistAnalysisTime = 1000;
 module.exports.youtubeResults = 5;
 module.exports.bangRatios = {

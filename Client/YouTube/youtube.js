@@ -37,6 +37,10 @@ angular.module('glitch.youtube', [
   });
 
   socket.on('playlist', function (data) {
-    $scope.upcomingVideos = data.playlist;
+    if (data.playlist[0].id === $scope.currentVideo.id) {
+      $scope.upcomingVideos = data.playlist.slice(1);
+    } else {
+      $scope.upcomingVideos = data.playlist;
+    }
   });
 });

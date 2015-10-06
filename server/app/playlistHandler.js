@@ -57,6 +57,7 @@ var playVideo = module.exports.playVideo = function (playlistEntry, callback) {
     console.log(newVideo.title + ' is now playing.  Video will end ' + newVideo.endMoment.calendar());
     module.exports.currentVideo = newVideo;
     socketHandler.io.emit('play', {
+      id: newVideo.id,
       url: newVideo.url,
       title: module.exports.currentVideo.title,
       time: 0

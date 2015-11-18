@@ -1,49 +1,53 @@
 <html>
 <head>
   <title>Glitch</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/boostrap.min.css">
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- <link rel="stylesheet" href="styles2.css"> -->
 </head>
 <body ng-app="glitch">
-  <h1>Glitch</h1>
-  <div class="Container" ng-controller="youtubeController">
+    <div class="container" ng-controller="youtubeController">
+     
+      <h1>Glitch</h1>
 
-    <div class="video-hist">
-      <ul>
-        <li class="playlist-video" ng-repeat="pastVideo in pastVideos track by $index">{{ pastVideo }}</li>
-      </ul>
-      <ul>
-        <li class="playlist-video current"> {{ currentVideo.title }}
-        </li>
-      </ul>
-      <ul>
-        <li class="playlist-video" ng-repeat="upcomingVideo in upcomingVideos track by $index">{{ upcomingVideo.title }}</li>
-      </ul>
-    </div>
+      <div class="video-hist">
+        <ul>
+          <li class="playlist-video" ng-repeat="pastVideo in pastVideos track by $index">{{ pastVideo }}</li>
+        </ul>
+        <ul>
+          <li class="playlist-video current"> {{ currentVideo.title }}
+          </li>
+        </ul>
+        <ul>
+          <li class="playlist-video" ng-repeat="upcomingVideo in upcomingVideos track by $index">{{ upcomingVideo.title }}</li>
+        </ul>
+      </div>
 
-    <div class="video-div">
-      <p class='video-info'> {{ currentVideo.title }}</p>
-      <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player'></youtube-video>
-      <h3>Use a ! before your chat message to add to Glitch playlist</h3>
-      <h5>Type !next to switch the video to the next one in the playlist</h5>
-    </div>
+      <div class="video-div">
+        <p class='video-info'> {{ currentVideo.title }}</p>
+        <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player'></youtube-video>
+        <h3>Use a ! before your chat message to add to Glitch playlist</h3>
+        <h5>Type !next to switch the video to the next one in the playlist</h5>
+      </div>
 
-    <div class="video-upcoming">
-      <ul>
-        <li class="playlist-video" ng-repeat="video in upcomingVideos track by $index">{{ video.title }}</li>
-      </ul>
-    </div>
+      <div class="video-upcoming">
+        <ul>
+          <li class="playlist-video" ng-repeat="video in upcomingVideos track by $index">{{ video.title }}</li>
+        </ul>
+      </div>
 
-    <div class="chat" ng-controller="chatController">
-      <ul id="messages" scroll-glue>
-        <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
-      </ul>
-      
-      <form ng-submit="sendMessage()">
-        <b>Username</b> <input name='username' type='text' ng-model='username'/>
-        <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
-        <button>Send</button>
-      </form>
-    </div>
+      <div class="chat" ng-controller="chatController">
+        <ul id="messages" scroll-glue>
+          <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
+        </ul>
+        
+        <form ng-submit="sendMessage()">
+          <b>Username</b> <input name='username' type='text' ng-model='username'/>
+          <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
+          <button>Send</button>
+        </form>
+      </div>
   </div>
 
   <!--javascripts-->  

@@ -3,6 +3,7 @@ body {
   font-family: arial, sans-serif;
 }
 
+
 [class*="col-"] {
   padding-bottom: 15px;
 
@@ -11,15 +12,19 @@ body {
 
 #appTitle {
   color:#c45911;
-  font-size: 4em;
+  font-size: 3em;
   font-weight:600;
+}
+
+#youtubeStuff {
+  padding: 0 55px;
 }
 .video-hist {
   /*visibility: hidden;*/
 }
 
 #chatStuff {
-  position:relative;
+  padding: 0;
   min-height: 100%;
 }
 

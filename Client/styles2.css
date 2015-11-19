@@ -1,7 +1,87 @@
+body {
+  background-color: white;
+  font-family: arial, sans-serif;
+}
+
+[class*="col-"] {
+  padding-bottom: 15px;
+
+}
+
+
+#appTitle {
+  color:#c45911;
+  font-size: 4em;
+  font-weight:600;
+}
 .video-hist {
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 
 #chatStuff {
+  position:relative;
   min-height: 100%;
+}
+
+
+#chatForm { 
+  position: absolute; 
+  bottom: 0;  
+  padding: 30px;
+/*  text-align: center;*/
+}
+
+form input { 
+  width: 90%
+}
+
+form button { 
+  background: rgb(130, 224, 255); 
+  color: #170b35;
+  padding: 0 10px;
+  font-size: 12px; 
+}
+
+
+#messages {
+  background-color: #ddd; 
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0;
+  overflow: auto; 
+}
+
+#messages li { 
+  padding: 5px 10px; 
+}
+
+#messages li:nth-child(odd) { 
+  background: #c45911; 
+}
+
+.current {
+  color: white;
+  background-color: #BBB;
+}
+
+
+.video-upcoming {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+.video-hist {
+  float: left;
+  padding: 15px;
+  width: 20%;
+}
+
+.video-upcoming {
+  padding: 15px;
+}
+
+li {
+  padding: 2px;
+  list-style-type: none;
 }

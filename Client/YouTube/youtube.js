@@ -27,6 +27,9 @@ angular.module('glitch.youtube', [
   socket.on('play', function (data) {
     if ($scope.currentVideo.id !== null) {
       $scope.pastVideos.push($scope.currentVideo.title);
+      if($scope.pastVideos.length>5) {
+        $scope.pastVideos.shift();
+      }
     }
 
     $scope.currentVideo.url = data.url + "#t=" + (data.time / 1000) + "s";

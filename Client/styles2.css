@@ -1,6 +1,6 @@
 body {
   background-color: white;
-  font-family: arial, sans-serif;
+  font-family: 'Inconsolata', arial, sans-serif;
 }
 
 
@@ -43,7 +43,7 @@ body {
 }
 
 .message {
-  padding: 5px 10px; 
+  padding: 5px 55px; 
 }
 
 .message::before {
@@ -69,4 +69,26 @@ form button {
   color: #170b35;
   padding: 0 10px;
   font-size: 12px; 
+}
+.playlist {
+  padding: 20px 0px;
+}
+li.playlist-video.current {
+    color: #FF7518;
+    font-weight: 700;
+}
+
+li.playlist-video::after {
+    content: ' >>';
+}
+
+li.playlist-video:last-child::after {
+    content: '';
+}
+
+@media (min-width: 768px) { 
+  .message {
+    padding: 5px 10px; 
+  }
+
 }

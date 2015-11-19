@@ -56,7 +56,7 @@ body {
 }
 
 #messages li:nth-child(2n+3) { 
-  background: #EFE565;  /*c45911 burnt orange #FF7518 saturated orange #F78E47 pale orange #EFE565 pale yellow*/ 
+  background: #DAD6A7;  /*c45911 burnt orange #FF7518 saturated orange #F78E47 pale orange #EFE565 pale yellow #DAD6A7 palest yellow*/ 
 }
 
 

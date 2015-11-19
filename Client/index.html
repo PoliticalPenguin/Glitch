@@ -1,6 +1,8 @@
 <html>
 <head>
   <title>Glitch</title>
+  <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- <link rel="stylesheet" href="styles.css"> -->
   
@@ -13,16 +15,13 @@
 
         <div id="youtubeStuff" class="col-sm-8" ng-controller="youtubeController">
           
-          <h1 id="appTitle">Glitch</h1>
+          <h1 id="appTitle">Glitch_</h1>
 
           <!-- <p class='video-info'> {{ currentVideo.title }}</p> -->
 
           <div class="video-div embed-responsive embed-responsive-16by9">
             <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player embed-responsive-item'></youtube-video>
-          </div>
-          <h3>Use a ! before your chat message to add to Glitch playlist</h3>
-          <h5>Type !next to switch the video to the next one in the playlist</h5>
-          
+          </div>          
           <!-- hide in small screen devices -->
 <!--           <div class="video-hist">
             <ul>
@@ -42,6 +41,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque dictum ali
 
         <div id="chatStuff" class="col-sm-4" ng-controller="chatController">
             <ul id="messages" scroll-glue>
+              <li class="message intro"><b>Use a ! before your chat message to add to Glitch playlist
+              <br>Type !next to switch the video to the next one in the playlist
+              </b></li>
+
               <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
             </ul>
             <div id="chatForm">

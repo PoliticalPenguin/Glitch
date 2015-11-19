@@ -11,6 +11,7 @@ body {
 
 
 #appTitle {
+  font-family: 'VT323';
   color:#c45911;
   font-size: 3em;
   font-weight:600;
@@ -18,9 +19,6 @@ body {
 
 #youtubeStuff {
   padding: 0 55px;
-}
-.video-hist {
-  /*visibility: hidden;*/
 }
 
 #chatStuff {
@@ -36,6 +34,32 @@ body {
 /*  text-align: center;*/
 }
 
+#messages {
+  background-color: #ddd; 
+  list-style-type: none; 
+  margin: 0; 
+  padding: 0;
+  overflow: auto; 
+}
+
+.message {
+  padding: 5px 10px; 
+}
+
+.message::before {
+  font-weight: 700;
+  content:'> ';
+}
+
+.message.intro {
+  background:#FF7518;
+}
+
+#messages li:nth-child(2n+3) { 
+  background: #EFE565;  /*c45911 burnt orange #FF7518 saturated orange #F78E47 pale orange #EFE565 pale yellow*/ 
+}
+
+
 form input { 
   width: 90%
 }
@@ -45,48 +69,4 @@ form button {
   color: #170b35;
   padding: 0 10px;
   font-size: 12px; 
-}
-
-
-#messages {
-  background-color: #ddd; 
-  list-style-type: none; 
-  margin: 0; 
-  padding: 0;
-  overflow: auto; 
-}
-
-#messages li { 
-  padding: 5px 10px; 
-}
-
-#messages li:nth-child(odd) { 
-  background: #c45911; 
-}
-
-.current {
-  color: white;
-  background-color: #BBB;
-}
-
-
-.video-upcoming {
-  margin: auto;
-  width: 50%;
-  text-align: center;
-}
-
-.video-hist {
-  float: left;
-  padding: 15px;
-  width: 20%;
-}
-
-.video-upcoming {
-  padding: 15px;
-}
-
-li {
-  padding: 2px;
-  list-style-type: none;
 }

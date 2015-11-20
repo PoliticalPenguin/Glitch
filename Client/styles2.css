@@ -86,7 +86,7 @@ li.playlist-video:last-child::after {
     content: '';
 }
 
-@media (min-width: 768px) { 
+@media (min-width: 992px) { 
   .message {
     padding: 5px 10px; 
   }

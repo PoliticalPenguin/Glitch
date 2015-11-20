@@ -32,7 +32,7 @@
 
         <div id="chatStuff" class="col-sm-4" ng-controller="chatController">
             <ul id="messages" scroll-glue>
-              <li class="message intro"><b>Type '!' before your chat to add to the playlist (e.g. '!careless whisper'), or type '!next' to go to next video
+              <li class="message intro"><b>Chat here, preface with '!' to add to the playlist (e.g. '!careless whisper'), or type '!next' to go to next video
               </b></li>
 
               <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>

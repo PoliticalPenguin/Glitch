@@ -13,8 +13,8 @@ angular.module('glitch.youtube', [
   // Stores the currently playing video
   $scope.currentVideo = {
     id: null,
-    url: 'https://www.youtube.com/watch?v=8tPnX7OPo0Q',
-    title: "Waiting For Server..."
+    url: 'https://www.youtube.com/watch?v=49fv5foZnBs',
+    title: "Default video is playing... type '!'+ some words in the chat to start the queue"
   };
 
   // Stores the settings for the youtube-video element
@@ -27,6 +27,9 @@ angular.module('glitch.youtube', [
   socket.on('play', function (data) {
     if ($scope.currentVideo.id !== null) {
       $scope.pastVideos.push($scope.currentVideo.title);
+      if($scope.pastVideos.length>5) {
+        $scope.pastVideos.shift();
+      }
     }
 
     $scope.currentVideo.url = data.url + "#t=" + (data.time / 1000) + "s";

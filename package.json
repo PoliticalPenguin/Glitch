@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angularjs-scroll-glue": "^2.0.4",
     "body-parser": "^1.14.0",
     "bower": "^1.5.3",
     "chai": "^3.3.0",

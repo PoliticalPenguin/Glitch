@@ -1,49 +1,53 @@
 <html>
 <head>
   <title>Glitch</title>
-  <link rel="stylesheet" href="styles.css">
+  <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="styles.css"> -->
+  
+  <link rel="stylesheet" href="styles2.css">
 </head>
 <body ng-app="glitch">
-  <h1>Glitch</h1>
-  <div class="Container" ng-controller="youtubeController">
+    <div class="container-fluid">
 
-    <div class="video-hist">
-      <ul>
-        <li class="playlist-video" ng-repeat="pastVideo in pastVideos track by $index">{{ pastVideo }}</li>
-      </ul>
-      <ul>
-        <li class="playlist-video current"> {{ currentVideo.title }}
-        </li>
-      </ul>
-      <ul>
-        <li class="playlist-video" ng-repeat="upcomingVideo in upcomingVideos track by $index">{{ upcomingVideo.title }}</li>
-      </ul>
+      <div class="row">
+
+        <div id="youtubeStuff" class="col-md-8" ng-controller="youtubeController">
+          
+          <h1 id="appTitle">Glitch_</h1>
+
+          <!-- <p class='video-info'> {{ currentVideo.title }}</p> -->
+
+          <div class="video-div embed-responsive embed-responsive-16by9">
+            <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player embed-responsive-item'></youtube-video>
+          </div>
+          
+          <ul class="list-inline playlist">
+            <li class="playlist-video" ng-repeat="pastVideo in pastVideos track by $index">{{ pastVideo }}</li>
+            <li class="playlist-video current"> {{ currentVideo.title }}</li>
+            <li class="playlist-video" ng-repeat="upcomingVideo in upcomingVideos track by $index">{{ upcomingVideo.title }}</li>
+          </ul>
+        </div>
+
+        <div id="chatStuff" class="col-md-4" ng-controller="chatController">
+            <ul id="messages" scroll-glue>
+              <li class="message intro"><b>Chat here, preface with '!' to add to the playlist (e.g. '!careless whisper'), or type '!next' to go to next video
+              </b></li>
+
+              <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
+            </ul>
+            <div id="chatForm">
+              <form ng-submit="sendMessage()">
+                <b>Username</b> <input name='username' type='text' ng-model='username'/>
+                <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
+                <button>Send</button>
+              </form>
+            </div>
+        </div>
+
     </div>
 
-    <div class="video-div">
-      <p class='video-info'> {{ currentVideo.title }}</p>
-      <youtube-video video-url="currentVideo.url" player-vars = "playerVars" class='player'></youtube-video>
-      <h3>Use a ! before your chat message to add to Glitch playlist</h3>
-      <h5>Type !next to switch the video to the next one in the playlist</h5>
-    </div>
-
-    <div class="video-upcoming">
-      <ul>
-        <li class="playlist-video" ng-repeat="video in upcomingVideos track by $index">{{ video.title }}</li>
-      </ul>
-    </div>
-
-    <div class="chat" ng-controller="chatController">
-      <ul id="messages" scroll-glue>
-        <li class="message" ng-repeat="message in messages track by $index"> <b>{{message.username}}</b>: {{message.text}}</li>
-      </ul>
-      
-      <form ng-submit="sendMessage()">
-        <b>Username</b> <input name='username' type='text' ng-model='username'/>
-        <b>Message</b><input id="chatInput" placeholder="Say something!" style="font-size:10pt;height:30px" ng-model="messageText">
-        <button>Send</button>
-      </form>
-    </div>
   </div>
 
   <!--javascripts-->  
@@ -56,5 +60,14 @@
   <script src="socket.js"></script>   
   <script src="Chat/chat.js"></script>
   <script src="YouTube/youtube.js"></script>
+  <script>
+    var setChatWindowSize = function () {
+      var messageAreaHeight = document.getElementById('chatStuff').offsetHeight - document.getElementById('chatForm').offsetHeight;
+      messageAreaHeight = messageAreaHeight + "px";
+      document.getElementById('messages').style.height = messageAreaHeight;
+    };
+    setChatWindowSize();
+    window.addEventListener('resize', setChatWindowSize);
+  </script>
 </body>
 </html>
